@@ -1,4 +1,5 @@
 import "weapon.proto";
+
 message Hero {
   required Weapon weapon = 1;
   required int32 armor = 2;

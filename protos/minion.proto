@@ -21,7 +21,8 @@ message Minion {
   optional bool destroy_on_turn_end = 20;
   required int32 spell_damage = 21;
   optional bool cant_attack = 22;
-  enum tribe {
+  required Tribe tribe = 23;
+  enum Tribe {
     NONE = 0;
     BEAST = 1;
     MECH = 2;
