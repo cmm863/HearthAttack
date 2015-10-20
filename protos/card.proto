@@ -1,0 +1,5 @@
+message Card {
+  required bool has_been_used = 1;
+  required bool in_hand = 2;
+  required string name = 3;
+}
