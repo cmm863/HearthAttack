@@ -1,6 +1,44 @@
 from protos import deck_pb2, hero_pb2, card_pb2, player_model_pb2, weapon_pb2, minion_pb2
 from helpers import *
+import json
+from pprint import pprint
 
+expansion_sets = [
+    "Basic",
+    "Blackrock Mountain",
+    "Classic",
+    "Curse of Naxxramas",
+    "Goblins vs Gnomes",
+    "The Grand Tournament"
+]
+hero_list = [
+    ["Malfurion Stormrage", "Druid"],
+    ["Rexxar", "Hunter"],
+    ["Jaina Proudmoore", "Mage"],
+    ["Uther Lightbringer", "Paladin"],
+    ["Anduin Wrynn", "Priest"],
+    ["Valeera Sanguinar", "Rogue"],
+    ["Thrall", "Shaman"],
+    ["Gul'dan", "Warlock"],
+    ["Garrosh Hellscream", "Warrior"],
+    ["Alleria Windrunner", "Hunter"],
+    ["Medivh", "Mage"],
+    ["Magni Bronzebeard", "Warrior"]
+]
+hero_power_list = [
+    "Shapeshift",
+    "Steady Shot",
+    "Fireblast",
+    "Reinforce",
+    "Lesser Heal",
+    "Dagger Mastery",
+    "Totemic Call",
+    "Life Tap",
+    "Armor Up!"
+]
+
+with open("AllSets.json") as json_file:
+    data = json.load(json_file)
 
 # Create Weapon
 weapon = weapon_pb2.Weapon()
@@ -52,7 +90,6 @@ for line in loglines:
                     if deck_card.has_been_used is False and deck_card.in_hand is False:
                         deck_card.in_hand = True         # Set the card to be in hand
                         player_model.hand.extend([deck_card])
-                        print(player_model.__str__())
                         break
                     else:
                         continue
@@ -60,6 +97,45 @@ for line in loglines:
         ## Summon Friendly Minion
         elif "to FRIENDLY PLAY" in line:           # Friendly Minion summoned
             card_name = parseName(line)
+            is_hero = False
+            is_hero_power = False
+            for hero in hero_list:
+                if card_name == hero[0]:
+                    hero = hero_pb2.Hero()
+                    hero.weapon.CopyFrom(weapon)
+                    hero.armor = 0
+                    hero_minion = minion_pb2.Minion()
+                    hero_minion.max_health = 30
+                    hero_card = card_pb2.Card()
+                    hero_card.name = card_name
+                    hero_card.has_been_used = True
+                    hero_card.in_hand = False
+                    hero_minion.card.CopyFrom(hero_card)
+                    hero.minion.CopyFrom(hero_minion)
+                    is_hero = True
+                    break
+            for hp in hero_power_list:
+                if card_name == hp:
+                    is_hero_power = True
+                    break
+            if is_hero or is_hero_power:
+                continue
+            for card_set in expansion_sets:
+                for current_card in data[card_set]:
+                    if card_name == current_card["name"]:
+                        minion = minion_pb2.Minion()
+                        minion.has_attacked = False
+                        minion.health = current_card["health"]
+                        minion.max_health = current_card["health"]
+                        minion.attack = current_card["attack"]
+                        minion.spell_damage = 0
+                        minion.tribe = minion_pb2.Minion.NONE
+                        minion_card = card_pb2.Card()
+                        minion_card.has_been_used = True
+                        minion_card.in_hand = False
+                        minion_card.name = card_name
+                        minion.card.CopyFrom(minion_card)
+                        player_model.minions.extend([minion])
 
         elif "to OPPOSING PLAY" in line:           # Opponent minion summoned
             print("Opp summoned: " + parseName(line))

@@ -1,27 +1,29 @@
+import "card.proto";
 message Minion {
   optional bool taunt = 1;
   optional bool divine_shield = 2;
   optional bool windfury = 3;
   optional bool charge = 4;
   optional bool immune = 5;
-  required bool has_attacked = 6;
+  optional bool has_attacked = 6;
   optional bool has_windfury_attacked = 7;
   optional bool frozen = 8;
   optional bool silenced = 9;
   optional bool stealthed_until_revealed = 10;
   optional bool stealthed_until_next_turn = 11;
   optional bool hero_targetable = 12;
-  required int32 health = 13;
+  optional int32 health = 13;
   required int32 max_health = 14;
   optional int32 aura_health = 15;
-  required int32 attack = 16;
+  optional int32 attack = 16;
   optional int32 extra_attack_until_turn_end = 17;
   optional int32 aura_attack = 18;
   optional bool destroy_on_turn_start = 19;
   optional bool destroy_on_turn_end = 20;
-  required int32 spell_damage = 21;
+  optional int32 spell_damage = 21;
   optional bool cant_attack = 22;
-  required Tribe tribe = 23;
+  optional Tribe tribe = 23;
+  required Card card = 24;
   enum Tribe {
     NONE = 0;
     BEAST = 1;

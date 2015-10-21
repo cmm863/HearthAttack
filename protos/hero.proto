@@ -1,6 +1,7 @@
 import "weapon.proto";
-
+import "minion.proto";
 message Hero {
   required Weapon weapon = 1;
   required int32 armor = 2;
+  required Minion minion = 3;
 }
