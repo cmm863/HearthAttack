@@ -8,12 +8,12 @@ message PlayerModel {
   required int32 player_id = 2;
   required Hero hero = 3;
   required Deck deck = 4;
-  required int32 mana = 5;
+  optional int32 mana = 5;
   required int32 max_mana = 6;
-  required int32 deck_pos = 7;
-  required int32 fatigue_damage = 8;
+  optional int32 deck_pos = 7;
+  optional int32 fatigue_damage = 8;
   repeated Minion minions = 9;
   repeated Card hand = 10;
-  required int32 overload = 11;
-  required int32 num_cards_used = 12;
+  optional int32 overload = 11;
+  optional int32 num_cards_used = 12;
 }
