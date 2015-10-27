@@ -123,19 +123,22 @@ for line in loglines:
             for card_set in expansion_sets:
                 for current_card in data[card_set]:
                     if card_name == current_card["name"]:
-                        minion = minion_pb2.Minion()
-                        minion.has_attacked = False
-                        minion.health = current_card["health"]
-                        minion.max_health = current_card["health"]
-                        minion.attack = current_card["attack"]
-                        minion.spell_damage = 0
-                        minion.tribe = minion_pb2.Minion.NONE
-                        minion_card = card_pb2.Card()
-                        minion_card.has_been_used = True
-                        minion_card.in_hand = False
-                        minion_card.name = card_name
-                        minion.card.CopyFrom(minion_card)
-                        player_model.minions.extend([minion])
+                        try:
+                            minion = minion_pb2.Minion()
+                            minion.has_attacked = False
+                            minion.health = current_card["health"]
+                            minion.max_health = current_card["health"]
+                            minion.attack = current_card["attack"]
+                            minion.spell_damage = 0
+                            minion.tribe = minion_pb2.Minion.NONE
+                            minion_card = card_pb2.Card()
+                            minion_card.has_been_used = True
+                            minion_card.in_hand = False
+                            minion_card.name = card_name
+                            minion.card.CopyFrom(minion_card)
+                            player_model.minions.extend([minion])
+                        except:
+                            pass
 
         elif "to OPPOSING PLAY" in line:           # Opponent minion summoned
             print("Opp summoned: " + parseName(line))
@@ -167,3 +170,6 @@ for line in loglines:
             and "Target=0" not in line \
             and "PowerTaskList.DebugPrintPower()" in line:
         print(parseName(line) + " is targeting " + parseTarget(line))
+    elif "tag=CURRENT_PLAYER value=0" in line \
+            and "PowerTaskList.DebugPrintPower()" in line:
+        print("END TURN") # TURN ENDS HERE
