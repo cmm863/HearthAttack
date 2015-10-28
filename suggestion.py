@@ -11,18 +11,21 @@ expansion_sets = [
     "The Grand Tournament"
 ]
 
-def suggest_play(player)
+def suggest_play(player):
   with open("AllSets.json") as json_file:
     data = json.load(json_file)
-  int best=0
-  string best_name=""
+  best=0
+  best_name=""
   for card_set in expansion_sets:
-    for current_card in data[card_set]:
-      if current_card["cost"] > player.max_mana or current_card["cost"] <= best:
-        continue
-      for hand_card in player.hand:
-        if hand_card.name == current_card["name"]:
-          best = current_card["cost"]
-          best_name = hand_card.name
-          break
+	for current_card in data[card_set]:
+		try:
+			if current_card["cost"] > player.max_mana or current_card["cost"] <= best:
+				continue
+			for hand_card in player.hand:
+				if hand_card.name == current_card["name"]:
+					best = current_card["cost"]
+					best_name = hand_card.name
+					break
+		except:
+			pass
   print("Play: " + best_name)
