@@ -76,6 +76,7 @@ player_model.hero.CopyFrom(hero)
 player_model.deck.CopyFrom(deck)
 player_model.max_mana = 1
 
+int cards_drawn = 0
 
 logfile = open("/Users/connor/Library/Logs/Unity/Player.log", 'r')
 loglines = follow(logfile)
@@ -90,6 +91,10 @@ for line in loglines:
                     if deck_card.has_been_used is False and deck_card.in_hand is False:
                         deck_card.in_hand = True         # Set the card to be in hand
                         player_model.hand.extend([deck_card])
+                        cards_drawn += 1
+                        if cards_drawn >= 3         #only suggest plays after drawing starting hand
+                            player_model.max_mana = min(player_model.max_mana + 1, 10)  #increase mana
+                            suggest_play(player_model)  #print suggested play to user
                         break
                     else:
                         continue
