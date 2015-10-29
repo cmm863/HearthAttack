@@ -88,20 +88,20 @@ for line in loglines:
         ## Draw Card
         if "to FRIENDLY HAND" in line:
             card_name = parseName(line)             # Get card name
+            cards_drawn += 1			#count drawn cards
+            if cards_drawn == 4:         #starting hand is drawn
+                for card in player_model.hand:
+                    if card.name == "The Coin":		#The Coin indicates playing second
+                        played_first = False
+            if cards_drawn >= 4:
+                suggestion.suggest_play(player_model)  #print suggested play to user
+                break
             for deck_card in player_model.deck.cards:    # Cycle cards
                 if deck_card.name == card_name:          # If card name matches
                     # If the card matches and hasn't been used/drawn
                     if deck_card.has_been_used is False and deck_card.in_hand is False:
                         deck_card.in_hand = True         # Set the card to be in hand
                         player_model.hand.extend([deck_card])
-                        cards_drawn += 1			#count drawn cards
-                        if cards_drawn == 4:         #starting hand is drawn
-							for card in player_model.hand:
-								if card.name == "The Coin":		#The Coin indicates playing second
-									played_first = False
-                        if cards_drawn >= 4:
-							suggestion.suggest_play(player_model)  #print suggested play to user
-							break
                     else:
                         continue
 
