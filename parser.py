@@ -98,7 +98,7 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
             card_name = parseName(line)             # Get card name
             print("Player Drew: " + card_name)
             cards_drawn += 1			#count drawn cards
-            if cards_drawn == 4:         #starting hand is drawn
+            if cards_drawn == 5:         #The Coin is drawn (if playing second)
                 for card in player_model.hand:
                     if card.name == "The Coin":		#The Coin indicates playing second
                         played_first = False
