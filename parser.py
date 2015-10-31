@@ -84,8 +84,8 @@ cards_drawn = 0
 turns_ended = 0
 
 logfile = open(configFile, 'r')
-logfile.seek(0,2)
-while not "tag=PLAYSTATE" in line and not "value=LOST" in line:
+logfile.seek(getSeek(logfile))
+while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
     while True:
         line = logfile.readline()
         if not line:
