@@ -3,6 +3,7 @@ from helpers import *
 import json
 from pprint import pprint
 import suggestion
+import time
 
 expansion_sets = [
     "Basic",
@@ -69,7 +70,6 @@ for line in lines:
     if double:
         deck.cards.extend([temp_card])
 
-
 player_model = player_model_pb2.PlayerModel()
 player_model.name = "connor"
 player_model.player_id = 0
@@ -81,9 +81,15 @@ played_first = True
 cards_drawn = 0
 turns_ended = 0
 
-logfile = open("C:\Program Files (x86)\Hearthstone\Hearthstone_Data\output_log.txt", 'r')
-loglines = follow(logfile)
-for line in loglines:
+logfile = open("D:\Files\Hearthstone\Hearthstone_Data\output_log.txt", 'r')
+logfile.seek(0,2)
+while not "tag=PLAYSTATE" in line and not "value=LOST" in line:
+    while True:
+        line = logfile.readline()
+        if not line:
+            time.sleep(0.1)
+        else:
+            break
     if "TRANSITIONING" in line:
         ## Draw Card
         if "to FRIENDLY HAND" in line:
@@ -95,7 +101,7 @@ for line in loglines:
                         played_first = False
             if cards_drawn >= 4:
                 suggestion.suggest_play(player_model)  #print suggested play to user
-                break
+                continue
             for deck_card in player_model.deck.cards:    # Cycle cards
                 if deck_card.name == card_name:          # If card name matches
                     # If the card matches and hasn't been used/drawn
@@ -157,25 +163,25 @@ for line in loglines:
             print("Secret summoned: " + parseName(line))
     ## Card played or thrown back
     elif "from FRIENDLY HAND ->" in line:
-		try:
-			card_name = parseName(line)
-			for deck_card in player_model.deck.cards:
-				if deck_card.name == card_name:
+
+        try:
+            card_name = parseName(line)
+            for deck_card in player_model.deck.cards:
+                if deck_card.name == card_name:
 					# If the card has been drawn but not used
-					if deck_card.in_hand is True and deck_card.has_been_used is False:
-						deck_card.in_hand = False
+                    if deck_card.in_hand is True and deck_card.has_been_used is False:
+                        deck_card.in_hand = False
 						# If card is played and not returned to deck
-						if "FRIENDLY DECK" not in line:
-							deck_card.has_been_used = True
-			i = 0
-			for hand_card in player_model.hand:
-				if hand_card.name == card_name:
-					del player_model.hand[i]
-					break
-				i += 1
-		except:
-			pass
-		
+                        if "FRIENDLY DECK" not in line:
+                            deck_card.has_been_used = True
+            i = 0
+            for hand_card in player_model.hand:
+                if hand_card.name == card_name:
+                    del player_model.hand[i]
+                    break
+                i += 1
+        except:
+            pass
     elif "from OPPOSING HAND" in line:           # Any opponent card played
         print("Opp played: " + parseName(line))
     elif "BlockType=ATTACK" in line \
@@ -187,7 +193,7 @@ for line in loglines:
         print(parseName(line) + " is targeting " + parseTarget(line))
     elif "tag=CURRENT_PLAYER value=0" in line \
             and "PowerTaskList.DebugPrintPower()" in line:
-		print("END TURN") # TURN ENDS HERE
-		turns_ended += 1
-		if (turns_ended % 2) == played_first:
-			player_model.max_mana = min(player_model.max_mana + 1, 10) #increase mana up to 10
+        print("END TURN") # TURN ENDS HERE
+        turns_ended += 1
+        if (turns_ended % 2) == played_first:
+            player_model.max_mana = min(player_model.max_mana + 1, 10) #increase mana up to 10
