@@ -98,10 +98,6 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
             card_name = parseName(line)             # Get card name
             print("Player Drew: " + card_name)
             cards_drawn += 1			#count drawn cards
-            if cards_drawn == 5:         #The Coin is drawn (if playing second)
-                for card in player_model.hand:
-                    if card.name == "The Coin":		#The Coin indicates playing second
-                        played_first = False
             if cards_drawn >= 4:
                 suggestion.suggest_play(player_model)  #print suggested play to user
                 continue
@@ -199,5 +195,9 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
             and "PowerTaskList.DebugPrintPower()" in line:
         print("END TURN") # TURN ENDS HERE
         turns_ended += 1
+        if turns_ended == 1:
+            for card in player_model.hand:
+                if card.name == "The Coin":		#The Coin indicates playing second
+                    played_first = False
         if (turns_ended % 2) == played_first:
             player_model.max_mana = min(player_model.max_mana + 1, 10) #increase mana up to 10
