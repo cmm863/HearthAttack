@@ -105,6 +105,8 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
             time.sleep(0.1)
         else:
             break
+    if "[Power] GameState" in line:  ##Ignores redundant log information from DebugDump()
+        continue
     if "TRANSITIONING" in line:
         ## Draw Card
         if "to FRIENDLY HAND" in line:
@@ -216,3 +218,16 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
                     played_first = False
         if (turns_ended % 2) == played_first:
             player_model.max_mana = min(player_model.max_mana + 1, 10) #increase mana up to 10
+    elif "PowerTaskList.DebugPrintPower() -     TAG_CHANGE" in line:
+        '''
+                           ------MAIN BOARD UPDATE ROUTINE------
+        This call marks an update to some variable on blizzards side.  While not all of these
+        are useful to us, this also includes the changes in health, status, power, mana cost,
+        available mana, max mana, special flags, board position, and virtually everything else
+        that doesn't involve moving a card between zones.
+
+        Virtually all board updates should be in here with the exception of Move(Play/Destroy/Recall),
+        Draw,
+        '''
+
+
