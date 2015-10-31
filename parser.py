@@ -79,6 +79,19 @@ player_model.hero.CopyFrom(hero)
 player_model.deck.CopyFrom(deck)
 player_model.max_mana = 1
 
+enemy_model = player_model_pb2.PlayerModel()
+enemy_model.name = "connor"
+enemy_model.player_id = 1
+enemy_model.hero.CopyFrom(hero)
+enemy_model.deck.CopyFrom(deck)
+enemy_model.max_mana = 1
+
+'''
+board = board_model_pb2.BoardModel()
+board.currentPlayer.CopyFrom(player_model)
+board.waitingPlayer.CopyFrom(enemy_model)
+'''
+
 played_first = True
 cards_drawn = 0
 turns_ended = 0
@@ -102,6 +115,7 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
                 for card in player_model.hand:
                     if card.name == "The Coin":		#The Coin indicates playing second
                         played_first = False
+                print("Player went first:  ", played_first)
             if cards_drawn >= 4:
                 suggestion.suggest_play(player_model)  #print suggested play to user
                 continue
@@ -133,6 +147,8 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
                     hero_card.in_hand = False
                     hero_minion.card.CopyFrom(hero_card)
                     hero.minion.CopyFrom(hero_minion)
+                    player_model.hero.CopyFrom(hero)
+                    #board_model.current_player.CopyFrom(player_model)
                     is_hero = True
                     break
             for hp in hero_power_list:
@@ -158,6 +174,7 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
                             minion_card.name = card_name
                             minion.card.CopyFrom(minion_card)
                             player_model.minions.extend([minion])
+                            #board_model.current_player.CopyFrom(player_model)
                         except:
                             pass
 
@@ -167,7 +184,6 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
             print("Secret summoned: " + parseName(line))
     ## Card played or thrown back
     elif "from FRIENDLY HAND ->" in line:
-
         try:
             card_name = parseName(line)
             for deck_card in player_model.deck.cards:
