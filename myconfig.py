@@ -1,0 +1,1 @@
+configFile = "D:\Files\Hearthstone\Hearthstone_Data\output_log.txt"

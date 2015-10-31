@@ -1,9 +1,11 @@
 from protos import deck_pb2, hero_pb2, card_pb2, player_model_pb2, weapon_pb2, minion_pb2
 from helpers import *
+from myconfig import *
 import json
 from pprint import pprint
 import suggestion
 import time
+
 
 expansion_sets = [
     "Basic",
@@ -81,7 +83,7 @@ played_first = True
 cards_drawn = 0
 turns_ended = 0
 
-logfile = open("D:\Files\Hearthstone\Hearthstone_Data\output_log.txt", 'r')
+logfile = open(configFile, 'r')
 logfile.seek(0,2)
 while not "tag=PLAYSTATE" in line and not "value=LOST" in line:
     while True:
@@ -94,6 +96,7 @@ while not "tag=PLAYSTATE" in line and not "value=LOST" in line:
         ## Draw Card
         if "to FRIENDLY HAND" in line:
             card_name = parseName(line)             # Get card name
+            print("Player Drew: " + card_name)
             cards_drawn += 1			#count drawn cards
             if cards_drawn == 4:         #starting hand is drawn
                 for card in player_model.hand:
@@ -114,6 +117,7 @@ while not "tag=PLAYSTATE" in line and not "value=LOST" in line:
         ## Summon Friendly Minion
         elif "to FRIENDLY PLAY" in line:           # Friendly Minion summoned
             card_name = parseName(line)
+            print("Player played: " + card_name)
             is_hero = False
             is_hero_power = False
             for hero in hero_list:
