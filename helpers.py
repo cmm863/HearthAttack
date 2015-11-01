@@ -20,8 +20,10 @@ def getSeek(logfile):
   line = ''
   count = 0
   while True:
-    logfile.seek(-1, 1)
     pos = logfile.tell()
+    if pos == 0:
+      break
+    logfile.seek(-1, 1)
     if logfile.read(1) == '\n':
       line = logfile.readline()
       logfile.seek(pos-1)
