@@ -41,6 +41,12 @@ hero_power_list = [
     "Armor Up!"
 ]
 
+tag_change_handler = [
+    "DAMAGE",
+    "NUM_ATTACKS_THIS_TURN",
+    "EXHAUSTED"
+]
+
 with open("AllSets.json") as json_file:
     data = json.load(json_file)
 
@@ -97,15 +103,19 @@ cards_drawn = 0
 turns_ended = 0
 
 logfile = open(configFile, 'r')
+print("Begin - Backtrace")
 logfile.seek(getSeek(logfile))
+print("Backtrace Complete")
+
 while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
+    line = '-'
     while True:
-        line = logfile.readline()
-        if not line:
+        line = ''.join((line, logfile.readline()))
+        if not line[-1:] == '\n':
             time.sleep(0.1)
         else:
             break
-    if "[Power] GameState" in line:  ##Ignores redundant log information from DebugDump()
+    if "[Power] GameState" in line:  ##Ignores redundant log information
         continue
     if "TRANSITIONING" in line:
         ## Draw Card
@@ -218,7 +228,6 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
                     played_first = False
         if (turns_ended % 2) == played_first:
             player_model.max_mana = min(player_model.max_mana + 1, 10) #increase mana up to 10
-    elif "PowerTaskList.DebugPrintPower() -     TAG_CHANGE" in line:
         '''
                            ------MAIN BOARD UPDATE ROUTINE------
         This call marks an update to some variable on blizzards side.  While not all of these
@@ -230,4 +239,20 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
         Draw,
         '''
 
+        '''
+        I generated a simple log consisting of just a minion (Cogmaster) attacking a hero (Jaina).  I'll
+        upload the rest of the log with it, but the three critical lines we need to parse are below.
+        [Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=DAMAGE value=1
+ 
+        (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
+        [Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=NUM_ATTACKS_THIS_TURN value=1
+ 
+        (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+        [Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=EXHAUSTED value=1
+        '''
+    elif "PowerTaskList.DebugPrintPower() -     TAG_CHANGE" in line:
+        tag = parseTag(line)
+        if tag in tag_change_handler and "Entity=[" in line: #checks for tag handled by parser and
+            print(tag + " Detected") #Filters out Special Entities (Gamestate, User, Innkeeper, etc)

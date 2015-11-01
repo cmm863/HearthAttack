@@ -12,6 +12,8 @@ def parseName(line):
   return line.split("name=",1)[1].split(" id=",1)[0]
 def parseTarget(line):
   return line.split("Target=[name=",1)[1].split(" id=",1)[0]
+def parseTag(line):
+  return line.split("tag=",1)[1].split(" value=",1)[0]
 
 def getSeek(logfile):
   logfile.seek(0,2)
@@ -30,3 +32,12 @@ def getSeek(logfile):
     if count > 2:
       break
   return logfile.tell()
+
+'''def updateEntity(board, line):
+  if "Entity=[" in line
+    idnfo = line.split("Entity=[", 1)[1].split("] tag=", 1)[0]
+    
+  elif
+    #check special Entity
+    idnfo = line.split("Entity=",1)[1].split(" ",1)[0]'''
+  
