@@ -1,4 +1,4 @@
-from protos import deck_pb2, hero_pb2, card_pb2, player_model_pb2, weapon_pb2, minion_pb2
+from protos import deck_pb2, hero_pb2, card_pb2, player_model_pb2, weapon_pb2, minion_pb2, update_pb2
 from helpers import *
 from myconfig import *
 import json
@@ -92,6 +92,9 @@ enemy_model.hero.CopyFrom(hero)
 enemy_model.deck.CopyFrom(deck)
 enemy_model.max_mana = 1
 
+message = update_pb2.Update()
+message.inst = "PRE"
+
 '''
 board = board_model_pb2.BoardModel()
 board.currentPlayer.CopyFrom(player_model)
@@ -132,8 +135,8 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
                     if deck_card.has_been_used is False and deck_card.in_hand is False:
                         deck_card.in_hand = True         # Set the card to be in hand
                         player_model.hand.extend([deck_card])
-                    else:
-                        continue
+                    #else:
+                        #continue
 
         ## Summon Friendly Minion
         elif "to FRIENDLY PLAY" in line:           # Friendly Minion summoned
@@ -189,6 +192,8 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
             print("Opp summoned: " + parseName(line))
         elif "to FRIENDLY SECRET" in line:         # Secret summoned by mad scientist
             print("Secret summoned: " + parseName(line))
+        else:
+            continue
     ## Card played or thrown back
     elif "from FRIENDLY HAND ->" in line:
         try:
@@ -236,19 +241,15 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
         that doesn't involve moving a card between zones.
 
         Virtually all board updates should be in here with the exception of Move(Play/Destroy/Recall),
-        Draw,
+        Draw, Create, and End Turn.
         '''
 
         '''
         I generated a simple log consisting of just a minion (Cogmaster) attacking a hero (Jaina).  I'll
         upload the rest of the log with it, but the three critical lines we need to parse are below.
         [Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=DAMAGE value=1
- 
-        (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
         [Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=NUM_ATTACKS_THIS_TURN value=1
- 
-        (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
 
         [Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=EXHAUSTED value=1
         '''
@@ -256,3 +257,14 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
         tag = parseTag(line)
         if tag in tag_change_handler and "Entity=[" in line: #checks for tag handled by parser and
             print(tag + " Detected") #Filters out Special Entities (Gamestate, User, Innkeeper, etc)
+            message.Clear()
+            message.inst = tag
+            message.args.extend(updateEntity(line))
+            message.args.append(line.split(" value=", 1)[1].strip('\n'))
+        else:
+            continue
+    else: #line contains no valid message for updater
+        continue
+    #print(message.SerializeToString())
+    print(message)
+

@@ -35,11 +35,20 @@ def getSeek(logfile):
       break
   return logfile.tell()
 
-'''def updateEntity(board, line):
-  if "Entity=[" in line
-    idnfo = line.split("Entity=[", 1)[1].split("] tag=", 1)[0]
-    
-  elif
-    #check special Entity
-    idnfo = line.split("Entity=",1)[1].split(" ",1)[0]'''
+
+def updateEntity(line):
+  ret = line.split("Entity=[", 1)[1].split("] tag=", 1)[0]
+  return entitySplit(ret)
+
+def moveEntity(line):
+  arg = line.split("card [", 1)[1].split("] to ", 1)[0]
+  return entitySplit(ret)
+
+def entitySplit(line):
+  args = line.split(" ")
+  ret = []
+  for arg in args:
+    ret.append(arg.partition("=")[2])
+  return ret
+
   
