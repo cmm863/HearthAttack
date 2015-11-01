@@ -44,7 +44,8 @@ hero_power_list = [
 tag_change_handler = [
     "DAMAGE",
     "NUM_ATTACKS_THIS_TURN",
-    "EXHAUSTED"
+    "EXHAUSTED",
+    "RESET"
 ]
 
 with open("AllSets.json") as json_file:
@@ -119,6 +120,12 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
         else:
             break
     if "[Power] GameState" in line:  ##Ignores redundant log information
+        continue
+    elif "CREATE_GAME" in line:
+        message.Clear()
+        message.inst = "RESET"
+        #print(message.SerializeToString())
+        print(message)       
         continue
     if "TRANSITIONING" in line:
         ## Draw Card
