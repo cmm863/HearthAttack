@@ -1,0 +1,322 @@
+[Power] GameState.SendOption() - selectedOption=4 selectedSubOption=-1 selectedTarget=36 selectedPosition=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPowerList() - Count=26
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() - ACTION_START Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] BlockType=ATTACK Index=-1 Target=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2]
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=Xeya tag=417 value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=PROPOSED_ATTACKER value=35
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=PROPOSED_DEFENDER value=36
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=ATTACKING value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=NEXT_STEP value=MAIN_ACTION
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_COMBAT
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=Xeya tag=NUM_OPTIONS_PLAYED_THIS_TURN value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=DEFENDING value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=PREDAMAGE value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=PREDAMAGE value=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     META_DATA - Meta=DAMAGE Data=1 Info=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=LAST_AFFECTED_BY value=35
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=DAMAGE value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=NUM_ATTACKS_THIS_TURN value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=EXHAUSTED value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=PROPOSED_ATTACKER value=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=PROPOSED_DEFENDER value=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=ATTACKING value=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=DEFENDING value=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() - ACTION_END
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() - TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_ACTION
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() - ACTION_START Entity=Xeya BlockType=TRIGGER Index=-1 Target=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=NEXT_STEP value=MAIN_END
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() - ACTION_END
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintPower() - TAG_CHANGE Entity=Xeya tag=NUM_OPTIONS value=4
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugDump() - ID=59 ParentID=0 PreviousID=0 TaskCount=19
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() - ACTION_START Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] BlockType=ATTACK Index=-1 Target=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2]
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=Xeya tag=417 value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=PROPOSED_ATTACKER value=35
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=PROPOSED_DEFENDER value=36
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=ATTACKING value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=NEXT_STEP value=MAIN_ACTION
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_COMBAT
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=Xeya tag=NUM_OPTIONS_PLAYED_THIS_TURN value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=DEFENDING value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=PREDAMAGE value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=PREDAMAGE value=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     META_DATA - Meta=DAMAGE Data=1 Info=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=LAST_AFFECTED_BY value=35
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=DAMAGE value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=NUM_ATTACKS_THIS_TURN value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=EXHAUSTED value=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=PROPOSED_ATTACKER value=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=PROPOSED_DEFENDER value=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Cogmaster id=35 zone=PLAY zonePos=1 cardId=GVG_013 player=1] tag=ATTACKING value=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=[name=Jaina Proudmoore id=36 zone=PLAY zonePos=0 cardId=HERO_08 player=2] tag=DEFENDING value=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() - ACTION_END
+ 
+
+
+
+
+
+/*The Game appears to be preparing for my potential moves.  This section references
+  possible moves I could make.  We can use this to construct a filter to make a help
+  make sense of the rest of the log files.  This seems to always follow a call from
+  PowerTaskList.DebugDump()  that can, but not always, bracket some functionality.*/
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerProcessor.PrepareHistoryForCurrentTaskList() - m_currentTaskList=59
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintOptions() - id=6
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintOptions() -   option 0 type=END_TURN mainEntity=
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintOptions() -   option 1 type=POWER mainEntity=[name=Lightwarden id=10 zone=HAND zonePos=1 cardId=EX1_001 player=1]
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintOptions() -   option 2 type=POWER mainEntity=[name=Succubus id=18 zone=HAND zonePos=2 cardId=EX1_306 player=1]
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] GameState.DebugPrintOptions() -   option 3 type=POWER mainEntity=[name=Life Tap id=5 zone=PLAY zonePos=0 cardId=CS2_056 player=1]
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerProcessor.EndCurrentTaskList() - m_currentTaskList=59
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+
+
+
+
+[Power] PowerTaskList.DebugDump() - ID=60 ParentID=0 PreviousID=0 TaskCount=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugDump() - Source Action=(null)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=STEP value=MAIN_ACTION
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugDump() - End Action=(null)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerProcessor.PrepareHistoryForCurrentTaskList() - m_currentTaskList=60
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerProcessor.EndCurrentTaskList() - m_currentTaskList=60
+
+
+
+ 
+
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugDump() - ID=61 ParentID=0 PreviousID=0 TaskCount=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() - ACTION_START Entity=Xeya BlockType=TRIGGER Index=-1 Target=0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=GameEntity tag=NEXT_STEP value=MAIN_END
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() - ACTION_END
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerProcessor.PrepareHistoryForCurrentTaskList() - m_currentTaskList=61
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerProcessor.EndCurrentTaskList() - m_currentTaskList=61
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+
+
+
+
+
+[Power] PowerTaskList.DebugDump() - ID=62 ParentID=0 PreviousID=0 TaskCount=1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugDump() - Source Action=(null)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugPrintPower() -     TAG_CHANGE Entity=Xeya tag=NUM_OPTIONS value=4
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerTaskList.DebugDump() - End Action=(null)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerProcessor.PrepareHistoryForCurrentTaskList() - m_currentTaskList=62
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+[Power] PowerProcessor.EndCurrentTaskList() - m_currentTaskList=62
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+

@@ -1,0 +1,25 @@
+06:46:04.513 INFO  GameRepeatableSpec [Test worker]: deck 1	["0","1","2","3","4","5","6","7","8","9","10","11"]
+06:46:04.515 INFO  GameRepeatableSpec [Test worker]: deck 2	["0","1","2","3","4","5","6","7","8","9","10","11"]
+06:46:04.892 INFO  GameRepeatableSpec [Test worker]: deck 1	["Animal Companion","Soulfire","2","3","4","5","6","7","8","9","10","11"]
+06:46:04.893 INFO  GameRepeatableSpec [Test worker]: deck 2	["Animal Companion","Soulfire","2","3","4","5","6","7","8","9","10","11"]
+06:46:05.113 INFO  GameRepeatableSpec [Test worker]: deck 1	["Arcane Intellect","Novice Engineer","2","3","4","5","6","7","8","9","10","11"]
+06:46:05.113 INFO  GameRepeatableSpec [Test worker]: deck 2	["Arcane Intellect","Novice Engineer","2","3","4","5","6","7","8","9","10","11"]
+06:46:05.270 INFO  GameRepeatableSpec [Test worker]: deck 1	["Stormpike Commando","Stormpike Commando","Stormpike Commando","Stormpike Commando","Stormpike Commando","Stormpike Commando","Stormpike Commando"]
+06:46:05.271 INFO  GameRepeatableSpec [Test worker]: deck 2	["Stormpike Commando","Stormpike Commando","Stormpike Commando","Stormpike Commando","Stormpike Commando","Stormpike Commando","Stormpike Commando"]
+06:46:05.344 INFO  GameRepeatableSpec [Test worker]: deck 1	["Flamecannon","Bloodfen Raptor","Flamecannon","Bloodfen Raptor","Flamecannon","Bloodfen Raptor","Flamecannon"]
+06:46:05.344 INFO  GameRepeatableSpec [Test worker]: deck 2	["Bloodfen Raptor","Flamecannon","Bloodfen Raptor","Flamecannon","Bloodfen Raptor","Flamecannon","Bloodfen Raptor"]
+06:46:06.136 INFO  TestBoardModel [Test worker]: t frac = 0.18199299649824913
+06:46:06.273 INFO  TestGame [Test worker]: f = 0, w = 0, time taken = 21.317218 ms
+06:46:06.293 INFO  TestGame [Test worker]: f = 0, w = 0, time taken = 20.189132 ms
+06:46:06.301 INFO  TestGame [Test worker]: f = 1, w = 0, time taken = 7.797066 ms
+06:46:06.309 INFO  TestGame [Test worker]: f = 1, w = 0, time taken = 7.181217 ms
+06:46:06.317 INFO  TestGame [Test worker]: f = 1, w = 0, time taken = 8.262736 ms
+06:46:06.326 INFO  TestGame [Test worker]: f = 1, w = 0, time taken = 8.666996 ms
+06:46:06.335 INFO  TestGame [Test worker]: f = 0, w = 0, time taken = 8.627414 ms
+06:46:06.344 INFO  TestGame [Test worker]: f = 1, w = 0, time taken = 8.811063 ms
+06:46:06.353 INFO  TestGame [Test worker]: f = 0, w = 0, time taken = 7.64776 ms
+06:46:06.364 INFO  TestGame [Test worker]: f = 1, w = 0, time taken = 10.601564 ms
+06:46:07.082 INFO  TestGame [Test worker]: f = 1, w = 0, time taken = 717.692383 ms
+06:46:11.679 INFO  TestShaman [Test worker]: class com.hearthsim.card.basic.minion.HealingTotem
+06:46:11.835 INFO  TestYoungPriestess [Test worker]: Raid Leader Health = 3
+06:46:11.835 INFO  TestYoungPriestess [Test worker]: Boulderfist Ogre Health = 5

@@ -4,3 +4,7 @@ protos/__pycache__/
 .idea/
 .__pycache__/
 *.pyc
+*.class
+my/*
+java/HearthSim/build/
+protos/*.java
