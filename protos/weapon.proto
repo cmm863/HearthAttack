@@ -1,3 +1,8 @@
+package com.protos;
+
+option java_package = "com.protos";
+option java_outer_classname = "WeaponProto";
+
 message Weapon {
   required string name = 1;
   required int32 durability = 2;

@@ -1,4 +1,10 @@
+package com.protos;
+
+option java_package = "com.protos";
+option java_outer_classname = "MinionProto";
+
 import "card.proto";
+
 message Minion {
   optional bool taunt = 1;
   optional bool divine_shield = 2;

@@ -5,17 +5,18 @@
  *
  */
 
-package com.hearthattack;
+//package com.hearthattack;
 
 //add imports
 
 import com.hearthsim.model.BoardModel;
-import com.hearthattack.Bool;
+//import com.hearthattack.Bool;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.lang.Runnable;
+import java.io.*;
 
 
 public class Reader implements Runnable {
@@ -33,17 +34,19 @@ public class Reader implements Runnable {
 
   public void run() {
     BufferedReader istream = new BufferedReader(new InputStreamReader(System.in));//Will need to change this to appropriate stream
-    board_model_pb2.BoardModel protoBoard;
+    //board_model_pb2.BoardModel protoBoard;
+	try {
     while(!terminate.get()){
       while(!istream.ready())
-      protoBoard.parseFrom(System.in);
+      //protoBoard.parseFrom(System.in);
       write.lock();
-      try {
-        sharedBoard(protoBoard);
-      } finally {
+        //sharedBoard(protoBoard);
         update.set(true);
         write.unlock();
-      }
     }
+	}
+	catch (IOException e) {
+	  e.printStackTrace();
+	}
   }
 }
