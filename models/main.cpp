@@ -15,13 +15,14 @@ int main()
     {
       if(inString == "I")
       {
-        cin>>inString;
+        inFile>>inString;
+        inFile>>std::ws;
         if(inString == "drew:")
         {
           getline(inFile, inString);
           hand.addCard(inString);
         }
-        else if(inString == "Played:" || inString == "Mulliganed:")
+        else if(inString == "played:" || inString == "mulliganed:")
         {
           getline(inFile, inString);
           hand.removeCard(inString);
@@ -29,23 +30,27 @@ int main()
       }
     }
 
+    hand.print();
+
     hand.decidePlay(mana, player, opp);
 
     cout<<"Next turn? 1. Yes \t 2. No" <<endl;
     cin>>input;
 
-    if(input == 2)
+    if(input == 1)
     {
       inFile.close();
       inFile.open("log.txt");
       if(mana < 10)
         mana++;
-      break;
     }
 
-    else if(input != 1)
+    else if(input == 2)
+      break;
+
+    else
     {
-      cout<<"That's not an option. TERMINATING IMMEDIATELY BOOM POW FUCK YOU" <<endl;
+      cout<<"That's not an option. TERMINATING." <<endl;
       break;
     }
   }

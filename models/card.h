@@ -36,6 +36,7 @@ class Card: public Character
   string getName(){return m_name;}
   bool is_exh(){return m_exh;}
   Tribe getTribe(){return m_tr;}
+  void setName(string name){m_name = name;}
 };
 
 #endif // CARD_H

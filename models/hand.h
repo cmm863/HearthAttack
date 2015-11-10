@@ -20,7 +20,13 @@ class Hand
 
   void removeCard(string name);
 
+  void removeCard(int index);
+
   void decidePlay(int mana, Character you, Character opp);
+
+  int getNumCards(){return m_numCards;}
+
+  void print();
 };
 
 #endif // HAND_H

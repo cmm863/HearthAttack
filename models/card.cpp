@@ -23,11 +23,17 @@ void Card::init(string name, int hp, int atk, int cost, float val, float (*effVa
     m_divShield  = true;
   else if(name == "Leeroy Jenkins")
     m_charge = true;
+  else if(name == "Doomguard")
+    m_charge = true;
 }
 
 float Card::getVal(Character you, Character opp, Card* hand, Card** field)
 {
-  return valCalc() + m_val + m_effVal(you, opp, hand, field);
+  float retVal = valCalc() + m_val;
+  if(m_effVal != NULL)
+    retVal += m_effVal(you, opp, hand, field);
+
+  return retVal;
 }
 
 
@@ -40,7 +46,7 @@ float Card::valCalc ()
 
   if(m_taunt)
   {
-    totalVal += m_hp*0.5;
+    totalVal += m_hp*0.25;
     totalVal += m_atk * 0.1;
   }
   if(m_charge)
@@ -158,13 +164,25 @@ float Card::voidcall_val(Character you, Character opp, Card* hand, Card** field)
 float Card::doom_val(Character you, Character opp, Card* hand, Card** field)
 {
   float retVal = 0;
+//  int totAtk = 0;
 
-  for(int i = 0; i < 2; i++)
+  for(int i = 0; i < 3; i++)
   {
-    if(hand[i].m_name != "")
-      retVal - 3;
+    if(hand[i].m_name != "" && hand[i].m_name != "Doomguard")
+      retVal -= 3;
+  }
+/*
+  for(int i = 0; i < 7; i++)
+  {
+    if(field[i] != NULL)
+      totAtk += field[i]->m_atk;
   }
 
+  totAtk += 6;
+
+  if(totAtk >= opp.getHP())
+    retVal = 10000;
+*/
   return retVal;
 }
 
