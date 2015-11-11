@@ -5,12 +5,11 @@
  *
  */
 
-//package com.hearthattack;
+package com.hearthattack;
 
 //add imports
 
-import com.hearthsim.model.BoardModel;
-//import com.hearthattack.Bool;
+import com.protos.PlayerModelProto;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -20,33 +19,38 @@ import java.io.*;
 
 
 public class Reader implements Runnable {
+  private PlayerModelProto playerModel;
+  private PlayerModelProto opponentModel;
   private AtomicBoolean update;
   private AtomicBoolean terminate;
-  private BoardModel newBoard;
   private Lock write;
 
-  public Reader(BoardModel sharedBoard, AtomicBoolean sharedFlag, AtomicBoolean sharedTerm, ReentrantReadWriteLock rwLock) {
-    newBoard = sharedBoard;
+  public Reader(PlayerModelProto sharedPlayer, PlayerModelProto sharedOpponent, AtomicBoolean sharedFlag,
+				AtomicBoolean sharedTerm, ReentrantReadWriteLock rwLock) {
+    playerModel = sharedPlayer;
+	opponentModel = sharedOpponent;
     update = sharedFlag;
     terminate = sharedTerm;
     write = rwLock.writeLock();
   }
 
   public void run() {
-    BufferedReader istream = new BufferedReader(new InputStreamReader(System.in));//Will need to change this to appropriate stream
-    //board_model_pb2.BoardModel protoBoard;
 	try {
-    while(!terminate.get()){
-      while(!istream.ready())
-      //protoBoard.parseFrom(System.in);
-      write.lock();
-        //sharedBoard(protoBoard);
-        update.set(true);
-        write.unlock();
-    }
+	  FileInputStream istream = new FileInputStream("Parser.log");
+	  while(!terminate.get()){
+		while(!istream.available()); //wait for new data in stream
+		  playerModel = PlayerModelProto.parseFrom(istream);
+		  opponentModel = PlayerModelProto.parseFrom(istream);
+		  write.lock();
+			update.set(true);
+			write.unlock();
+	  }
+	}
+	catch (FileNotFoundException e) {
+		System.out.println("Unable to open file");
 	}
 	catch (IOException e) {
-	  e.printStackTrace();
+		e.printStackTrace();
 	}
   }
 }
