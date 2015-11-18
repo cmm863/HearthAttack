@@ -7,13 +7,22 @@
 
 package com.hearthattack;
 
+import com.hearthsim.exception.HSException;
+import com.hearthsim.exception.HSInvalidCardException;
+import com.hearthsim.exception.HSInvalidParamFileException;
+import com.hearthsim.exception.HSParamNotFoundException;
+
+import com.hearthsim.player.playercontroller.WeightedScorer;
+import com.hearthsim.util.factory.BoardStateFactoryBase;
 import com.hearthsim.util.factory.DepthBoardStateFactory;
 import com.hearthsim.util.HearthActionBoardPair;
 import com.hearthsim.util.tree.HearthTreeNode;
 import com.hearthsim.util.tree.StopNode;
 import com.hearthsim.model.BoardModel;
 import com.hearthsim.model.PlayerModel;
+import com.hearthsim.util.CardFactory;
 import com.hearthsim.card.minion.Minion;
+import com.hearthsim.card.Deck;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,28 +35,28 @@ public class moveGen {
   private WeightedScorer scorer = new WeightedScorer();
 
   public moveGen() {
-        this.scorer.setMyAttackWeight(0.9);
-        this.scorer.setMyHealthWeight(0.9);
-        this.scorer.setEnemyAttackWeight(1.0);
-        this.scorer.setEnemyHealthWeight(1.0);
-        this.scorer.setTauntWeight(1.0);
-        this.scorer.setMyHeroHealthWeight(0.1);
-        this.scorer.setEnemyHeroHealthWeight(0.1);
-        this.scorer.setManaWeight(0.1);
-        this.scorer.setMyNumMinionsWeight(0.5);
-        this.scorer.setEnemyNumMinionsWeight(0.5);
-        this.scorer.setSpellDamageAddWeight(0.0);
-        this.scorer.setSpellDamageMultiplierWeight(0.5);
-        this.scorer.setMyDivineShieldWeight(0.0);
-        this.scorer.setEnemyDivineShieldWeight(0.0);
-
-        this.scorer.setMyWeaponWeight(0.5);
-        this.scorer.setEnemyWeaponWeight(0.5);
+    this(10);
   }
 
   public moveGen(int x){
     numMoves = x;
-    this.moveGen();
+    this.scorer.setMyAttackWeight(0.9);
+    this.scorer.setMyHealthWeight(0.9);
+    this.scorer.setEnemyAttackWeight(1.0);
+    this.scorer.setEnemyHealthWeight(1.0);
+    this.scorer.setTauntWeight(1.0);
+    this.scorer.setMyHeroHealthWeight(0.1);
+    this.scorer.setEnemyHeroHealthWeight(0.1);
+    this.scorer.setManaWeight(0.1);
+    this.scorer.setMyNumMinionsWeight(0.5);
+    this.scorer.setEnemyNumMinionsWeight(0.5);
+    this.scorer.setSpellDamageAddWeight(0.0);
+    this.scorer.setSpellDamageMultiplierWeight(0.5);
+    this.scorer.setMyDivineShieldWeight(0.0);
+    this.scorer.setEnemyDivineShieldWeight(0.0);
+
+    this.scorer.setMyWeaponWeight(0.5);
+    this.scorer.setEnemyWeaponWeight(0.5);
   }
 
   public moveGen(int x, WeightedScorer y){
@@ -55,7 +64,7 @@ public class moveGen {
     numMoves = x;
   }
 
-  public boolean getNumMoves() {
+  public int getNumMoves() {
     return numMoves;
   }
 
@@ -66,10 +75,10 @@ public class moveGen {
   //Pre : Takes a turn number and a BoardModel, just as a normal HearthSim AI would.
   //Post: Returns a list of selected moves sorted in decreasing order
   //      of value with the end of the move occurring in the 0th position of the list.
-  public List<List<HearthActionBoardPair>> getMoves(int turn, BoardModel board) {
-    PlayerModel playermodel0 = board.getCurrentPlayer();
-    PlayerModel playermodel1 = board.getWaitingPlayer();
-    factory = new DepthBoardStateFactory(playerModel0.getDeck(), playerModel1.getDeck(), MAX_THINK_TIME, true);
+  public List<ArrayList<HearthActionBoardPair>> getMoves(int turn, BoardModel board) throws HSException{
+    PlayerModel playerModel0 = board.getCurrentPlayer();
+    PlayerModel playerModel1 = board.getWaitingPlayer();
+    BoardStateFactoryBase factory = new DepthBoardStateFactory(playerModel0.getDeck(), playerModel1.getDeck(), MAX_THINK_TIME, true);
 
     HearthTreeNode toRet = new HearthTreeNode(board);
     HearthTreeNode rootNode = factory.doMoves(toRet, this.scorer);
@@ -92,6 +101,7 @@ public class moveGen {
       retList.get(i).add(new HearthActionBoardPair(current.getAction(), current.data_.deepCopy()));
       i++;
     }
+    return retList;
   }
 
   //Pre :  Takes a HearthTreeNode parent as the root of a tree.
@@ -135,7 +145,6 @@ public class moveGen {
             }
           }
         }
-        x = ret;
         ret = temp;
         temp = x;
         temp.clear();
