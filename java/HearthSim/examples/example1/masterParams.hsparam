@@ -1,4 +1,4 @@
-num_simulations           =   100
+num_simulations           =   1
 num_threads               =   1
 
 output_file               =   example1.hsres

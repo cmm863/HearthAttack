@@ -16,6 +16,9 @@ import com.hearthsim.util.factory.SparseBoardStateFactory;
 import com.hearthsim.util.tree.HearthTreeNode;
 import com.hearthsim.util.tree.StopNode;
 
+import com.hearthsim.BoardLogger;
+import com.hearthsim.MoveGen;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -26,7 +29,8 @@ public class BruteForceSearchAI implements ArtificialPlayer {
 
     private final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
     private final static int MAX_THINK_TIME = 20000;
-
+    private BoardLogger logfnc = new BoardLogger();
+	private MoveGen getMoves = new MoveGen(1);
     private boolean useSparseBoardStateFactory_ = true;
     private boolean useDuplicateNodePruning = true;
 
@@ -182,8 +186,12 @@ public class BruteForceSearchAI implements ArtificialPlayer {
         log.debug("playing turn for " + playerModel0.getName());
         // The goal of this ai is to maximize his board score
         log.debug("start turn board state is {}", board);
+		log.warn("BEFORE MOVE");
+		logfnc.log(board);
         HearthTreeNode toRet = new HearthTreeNode(board);
-
+        List<ArrayList<HearthActionBoardPair>> temp = getMoves.getMoves(turn, board);
+		log.warn("AFTER MOVE");
+		logfnc.log(temp.get(0).get(0).board);
         HearthTreeNode allMoves = factory.doMoves(toRet, this.scorer);
         ArrayList<HearthActionBoardPair> retList = new ArrayList<>();
         HearthTreeNode curMove = allMoves;

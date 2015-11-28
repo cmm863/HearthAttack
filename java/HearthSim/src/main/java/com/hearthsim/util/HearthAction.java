@@ -145,4 +145,7 @@ public class HearthAction {
         }
         return toRet;
     }
+	public String toString() {
+	  return new String();
+	}
 }
