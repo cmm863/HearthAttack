@@ -8,6 +8,7 @@ import com.hearthsim.card.minion.Hero;
 import com.hearthsim.card.minion.Minion;
 import com.hearthsim.exception.HSException;
 import com.hearthsim.model.PlayerModel;
+import com.hearthsim.model.BoardModel;
 import com.hearthsim.model.PlayerSide;
 import com.hearthsim.util.tree.HearthTreeNode;
 import org.json.JSONObject;
@@ -145,7 +146,68 @@ public class HearthAction {
         }
         return toRet;
     }
-	public String toString() {
-	  return new String();
+	public String toString(BoardModel temp) throws HSException {
+	    String toRet = "";
+		HearthTreeNode boardState = new HearthTreeNode(temp);
+        PlayerModel actingPlayer = actionPerformerPlayerSide != null ? boardState.data_.modelForSide(actionPerformerPlayerSide) : null;
+        PlayerModel targetPlayer = targetPlayerSide != null ? boardState.data_.modelForSide(targetPlayerSide) : null;
+
+        switch(verb_) {
+            case USE_CARD: {
+                toRet = actingPlayer.getName() + " USING " + actingPlayer.getHand().get(cardOrCharacterIndex_).getName();
+            }
+            break;
+            case HERO_ABILITY: {
+			    toRet = actingPlayer.getName() + " USING HERO POWER ON " + targetPlayer.getCharacter(targetCharacterIndex).getName();
+            }
+            break;
+            case ATTACK: {
+			    toRet = actingPlayer.getCharacter(CharacterIndex.fromInteger(cardOrCharacterIndex_)).getName();
+				toRet = toRet + " ATTACKING " + targetPlayer.getCharacter(targetCharacterIndex).getName();
+            }
+            break;
+            case UNTARGETABLE_BATTLECRY: {
+			    toRet = actingPlayer.getCharacter(CharacterIndex.fromInteger(cardOrCharacterIndex_)).getName();
+				toRet = toRet + " USING BATTLECRY";
+                break;
+            }
+            case TARGETABLE_BATTLECRY: {
+			    toRet = actingPlayer.getCharacter(CharacterIndex.fromInteger(cardOrCharacterIndex_)).getName();
+				toRet = toRet + " USING BATTLECRY ON " + targetPlayer.getCharacter(targetCharacterIndex).getName();
+                break;
+            }
+            case START_TURN: {
+                toRet = "START TURN";
+                break;
+            }
+            case END_TURN: {
+                toRet = "END TURN";
+                break;
+            }
+            case DO_NOT_USE_CARD: {
+                toRet = "MAKING CARDS UNUSABLE???";
+                break;
+            }
+            case DO_NOT_ATTACK: {
+                toRet = "NOT ATTACKING???";
+                break;
+            }
+            case DO_NOT_USE_HEROPOWER: {
+                toRet = "MAKING HERO POWER UNUSABLE???";
+                break;
+            }
+            case RNG: {
+                // We need to perform the current state again if the children don't exist yet. This can happen in certain replay scenarios.
+                // Do not do this if the previous action was *also* RNG or we will end up in an infinite loop.
+                toRet = "RNG NODE.  MOVEGEN SHOULD END.";
+                break;
+            }
+            case DRAW_CARDS: {
+                // Note, this action only supports drawing cards from the deck. Cards like Ysera or Webspinner need to be implemented using RNG children.
+                toRet = "DRAWING CARD (I'm too lazy to peak, so it's a mystery)";
+                break;
+            }
+        }
+        return toRet;
 	}
 }

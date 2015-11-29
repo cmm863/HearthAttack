@@ -186,12 +186,15 @@ public class BruteForceSearchAI implements ArtificialPlayer {
         log.debug("playing turn for " + playerModel0.getName());
         // The goal of this ai is to maximize his board score
         log.debug("start turn board state is {}", board);
-		log.warn("BEFORE MOVE");
-		logfnc.log(board);
+        log.warn("BEFORE MOVE");
+        logfnc.log(board);
         HearthTreeNode toRet = new HearthTreeNode(board);
         List<ArrayList<HearthActionBoardPair>> temp = getMoves.getMoves(turn, board);
-		log.warn("AFTER MOVE");
-		logfnc.log(temp.get(0).get(0).board);
+        log.warn("AFTER MOVE");
+        logfnc.log(temp.get(0).get(0).board);
+        /*for(int i = 0; i < temp.get(0).size() - 1; i++) {
+            log.warn(temp.get(0).get(i).action.toString(temp.get(0).get(i).board));
+        }*/
         HearthTreeNode allMoves = factory.doMoves(toRet, this.scorer);
         ArrayList<HearthActionBoardPair> retList = new ArrayList<>();
         HearthTreeNode curMove = allMoves;
@@ -217,6 +220,12 @@ public class BruteForceSearchAI implements ArtificialPlayer {
             } else {
                 retList.add(new HearthActionBoardPair(curMove.getAction(), curMove.data_));
             }
+        }
+        if(retList.size() > 0) {
+            log.warn("----->" + retList.get(0).action.toString(board));
+        }
+        for(int i = 1; i < retList.size(); i++) {
+            log.warn("----->" + retList.get(i).action.toString(retList.get(i - 1).board));
         }
         return retList;
     }
