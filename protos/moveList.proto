@@ -1,0 +1,65 @@
+package com.protos;
+
+option java_package = "com.protos";
+option java_outer_classname = "HAOutboundProto";
+
+import "player_model.proto";
+
+message Action {
+  enum Verb {
+    USE_CARD = 1;
+    HERO_ABILITY = 2;
+    ATTACK = 3;
+    UNTARGETABLE_BATTLECRY = 4;
+    TARGETABLE_BATTLECRY = 5;
+    START_TURN = 6;
+    END_TURN = 7;
+    DO_NOT_USE_CARD = 8;
+    DO_NOT_ATTACK = 9;
+    DO_NOT_USE_HEROPOWER = 10;
+    RNG = 11;
+    DRAW_CARDS = 12;
+  }
+
+  enum PlayerSide {
+    CURRENT_PLAYER = 1;
+    WAITING_PLAyer = 2;
+  }
+
+  enum CharacterIndex {
+    HERO = 0;
+    MINION_1 = 1;
+    MINION_2 = 2;
+    MINION_3 = 3;
+    MINION_4 = 4;
+    MINION_5 = 5;
+    MINION_6 = 6;
+    MINION_7 = 7;
+    MINION_8 = 8;
+    MINION_9 = 9;
+    UNKNOWN = 99;
+  }
+
+  required Verb verb = 1;
+  required PlayerSide actionPerformerPlayerSide = 2;
+  required int32 cardOrCharacterIndex = 3;
+  optional PlayerSide targetPlayerSide = 4;
+  optional CharacterIndex targetCharacterIndex = 5;
+}
+
+message Board {
+  required PlayerModel currentPlayer = 1;
+  required PlayerModel waitingPlayer = 2;
+}
+
+message HABP {
+  required Board board = 1;
+  optional Action action = 2;
+}
+
+message MoveList {
+  message HABPList {
+    repeated HABP actionBoardPair = 1;
+  }
+  repeated HABPList move = 1;
+}
