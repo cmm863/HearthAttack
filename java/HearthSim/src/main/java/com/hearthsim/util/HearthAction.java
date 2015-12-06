@@ -210,4 +210,16 @@ public class HearthAction {
         }
         return toRet;
 	}
+	
+	public PlayerSide getAPPS() {
+	    return actionPerformerPlayerSide;
+	}
+	
+	public PlayerSide getTPS() {
+	    return targetPlayerSide;
+	}
+	
+	public int getIndex() {
+	    return cardOrCharacterIndex_;
+	}
 }
