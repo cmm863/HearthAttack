@@ -8,6 +8,11 @@ protos/__pycache__/
 my/*
 java/HearthSim/build/
 protos/*.java
+protos/*.pb.cc
+protos/*.pb.h
+java/classpath/
+protos/com/protos/*.java
+*.jar
 *.log
 *.bin
 *.lock
