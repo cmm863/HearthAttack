@@ -6,6 +6,7 @@ package com.hearthsim;
 
 import com.hearthsim.model.BoardModel;
 import com.hearthsim.card.Card;
+import com.hearthsim.card.minion.Minion;
 import com.hearthsim.util.HearthAction;
 
 import com.hearthsim.exception.HSException;
@@ -20,12 +21,24 @@ public class BoardLogger {
       str = str + card.getName();
       str = str + ", ";
     }
-    log.warn("P1 Hand : " + str);
+    log.warn("P0 Hand : " + str);
+    str = "";
+    for (Minion minion : board.getCurrentPlayer().getMinions()) {
+      str = str + minion.getName();
+      str = str + ", ";
+    }
+    log.warn("P0 Field : " + str);
     str = "";
     for (Card card : board.getWaitingPlayer().getHand()) {
       str = str + card.getName();
       str = str + ", ";
     }
-    log.warn("P2 Hand : " + str);
+    log.warn("P1 Hand : " + str);
+    str = "";
+    for (Minion minion : board.getWaitingPlayer().getMinions()) {
+      str = str + minion.getName();
+      str = str + ", ";
+    }
+    log.warn("P1 Field : " + str);
   }
 }
