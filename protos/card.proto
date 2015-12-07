@@ -4,7 +4,8 @@ option java_package = "com.protos";
 option java_outer_classname = "CardProto";
 
 message Card {
-  required bool has_been_used = 1;
-  required bool in_hand = 2;
-  required string name = 3;
+  optional bool has_been_used = 1;
+  optional bool in_hand = 2;
+  optional int32 id = 3;
+  required string name = 4;
 }

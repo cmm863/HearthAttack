@@ -7,4 +7,5 @@ message Weapon {
   required string name = 1;
   required int32 durability = 2;
   required int32 attack = 3;
+  optional int32 damage = 4;
 }

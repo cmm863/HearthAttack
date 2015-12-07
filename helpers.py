@@ -14,7 +14,16 @@ def parseTarget(line):
   return line.split("Target=[name=",1)[1].split(" id=",1)[0]
 def parseTag(line):
   return line.split("tag=",1)[1].split(" value=",1)[0]
-
+def parseZone(line):
+    return line.split(" to ",1)[1]
+def parse_id(line):
+    return line.split("id=",1)[1].split(" ",1)[0]
+def parse_entity(line):
+    return line.split("Entity=",1)[1].split(" tag",1)[0]
+def parse_value(line):
+    return line.split("value=",1)[1].strip('\n')
+def parse_player_id(line):
+    return line.split("player=",1)[1].split("]")[0]
 def getSeek(logfile):
   logfile.seek(0,2)
   line = ''
@@ -41,7 +50,7 @@ def updateEntity(line):
   return entitySplit(ret)
 
 def moveEntity(line):
-  arg = line.split("card [", 1)[1].split("] to ", 1)[0]
+  ret = line.split("card [", 1)[1].split("] to ", 1)[0]
   return entitySplit(ret)
 
 def entitySplit(line):

@@ -4,6 +4,7 @@ option java_package = "com.protos";
 option java_outer_classname = "UpdateProtos";
 
 message Update {
-  required string inst = 1;
-  repeated string args = 2;
+  required string type = 1;
+  required string tag = 2;
+  required string name = 3;
 }

@@ -28,4 +28,4 @@ def suggest_play(player):
 					break
 		except:
 			pass
-  print("Play: " + best_name)
+  #print("Play: " + best_name)

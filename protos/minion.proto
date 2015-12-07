@@ -19,7 +19,7 @@ message Minion {
   optional bool stealthed_until_next_turn = 11;
   optional bool hero_targetable = 12;
   optional int32 health = 13;
-  required int32 max_health = 14;
+  optional int32 max_health = 14;
   optional int32 aura_health = 15;
   optional int32 attack = 16;
   optional int32 extra_attack_until_turn_end = 17;
@@ -30,6 +30,9 @@ message Minion {
   optional bool cant_attack = 22;
   optional Tribe tribe = 23;
   required Card card = 24;
+  optional int32 turn_played = 25;
+  optional int32 damage = 26;
+  optional bool deathrattle = 27;
   enum Tribe {
     NONE = 0;
     BEAST = 1;
