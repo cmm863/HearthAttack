@@ -166,4 +166,8 @@ public class Deck implements DeepCopyable<Deck> {
         }
         return new Deck(copiedCards);
     }
+
+    public ArrayList<Card> getDeck() {
+        return cards;
+    }
 }

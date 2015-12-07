@@ -23,7 +23,7 @@ message Action {
 
   enum PlayerSide {
     CURRENT_PLAYER = 1;
-    WAITING_PLAyer = 2;
+    WAITING_PLAYER = 2;
   }
 
   enum CharacterIndex {

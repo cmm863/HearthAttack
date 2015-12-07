@@ -1,6 +1,25 @@
 package com.hearthattack;
 
 import com.protos.HAOutboundProto;
+import com.protos.CardProto;
+import com.protos.DeckProto;
+import com.protos.HeroProto;
+import com.protos.MinionProto;
+import com.protos.PlayerModelProto;
+import com.protos.WeaponProto;
+
+import com.hearthsim.util.HearthAction;
+import com.hearthsim.util.HearthActionBoardPair;
+import com.hearthsim.model.BoardModel;
+import com.hearthsim.model.PlayerModel;
+import com.hearthsim.model.PlayerSide;
+import com.hearthsim.card.Deck;
+import com.hearthsim.card.minion.Minion;
+import com.hearthsim.card.Card;
+import com.hearthsim.card.CharacterIndex;
+import com.hearthsim.card.minion.Hero;
+import com.hearthsim.card.weapon.WeaponCard;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,8 +27,12 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 public class Messenger {
-  HAOutboundProto::MoveList.Builder msg = HAOutboundProto::MoveList.newBuilder();
+  HAOutboundProto.MoveList.Builder msg = HAOutboundProto.MoveList.newBuilder();
   FileOutputStream output;
   
   public Messenger() {
@@ -21,120 +44,208 @@ public class Messenger {
   }
   public void send(List<ArrayList<HearthActionBoardPair>> moveSet) {
     msg.clear();
-    HAOutboundProto::HABP val;
+    HAOutboundProto.HABP val;
+    HAOutboundProto.MoveList.HABPList.Builder move;
     for(int i = 0; i < moveSet.size(); i++) {
-      msg.addMove(HAOutboundProto::MoveList::HABPList.newBuilder());
+      move.clear();
       for(int j = 0; j < moveSet.get(i).size(); j++) {
         val = this.convertABP(moveSet.get(i).get(j));
-        msg.getMove(i).addActionBoardPair(val);
+        move.addActionBoardPair(val);
       }
+      msg.addMove(move.build());
     }
     msg.build().writeTo(output);
   }
   
-  public HAOutboundProto::HABP convertABP(HearthActionBoardPair abp) {
-    HAOutboundProto::HABP.builder ret;
+  public HAOutboundProto.HABP convertABP(HearthActionBoardPair abp) {
+    HAOutboundProto.HABP.Builder ret;
     ret.setBoard(this.convertBoard(abp.board));
     ret.setAction(this.convertAction(abp.action));
-    return ret;
+    return ret.build();
   }
   
-  public HAOutboundProto::Board convertBoard(BoardModel board) {
-    HAOutboundProto::Board.builder ret;
+  public HAOutboundProto.Board convertBoard(BoardModel board) {
+    HAOutboundProto.Board.Builder ret;
     ret.setCurrentPlayer(this.convertPlayer(board.getCurrentPlayer()));
     ret.setWaitingPlayer(this.convertPlayer(board.getWaitingPlayer()));
-    return ret;
+    return ret.build();
   }
   
-  public HAOutboundProto::Action convertAction(HearthAction action) {
-    HAOutboundProto::Action.builder ret;
-    ret.setVerb(action.verb_);
-    ret.setActionPerformerPlayerSide(action.getAPPS());
+  public HAOutboundProto.Action convertAction(HearthAction action) {
+    HAOutboundProto.Action.Builder ret;
+    ret.setVerb(this.convertVerb(action.verb_));
+    ret.setActionPerformerPlayerSide(this.convertPlayerSide(action.getAPPS()));
     ret.setCardOrCharacterIndex(action.getIndex());
-    ret.setTargetPlayerSide(action.getTPS());
-    ret.setTargetCharacterIndex(action.targetCharacterIndex);
-    return ret;
+    ret.setTargetPlayerSide(this.convertPlayerSide(action.getTPS()));
+    ret.setTargetCharacterIndex(this.convertCharIndex(action.targetCharacterIndex));
+    return ret.build();
   }
   
-  public PlayerModelProto::PlayerModel convertPlayer(PlayerModel player) {
-    PlayerModelProto::PlayerModel.builder ret;
+  public PlayerModelProto.PlayerModel convertPlayer(PlayerModel player) {
+    PlayerModelProto.PlayerModel.Builder ret;
     ret.setName(player.getName());
-    ret.setPlayer_id(player.getPlayerId());
+    ret.setPlayerId(player.getPlayerId());
     ret.setHero(this.convertHero(player.getHero()));
     ret.setDeck(this.convertDeck(player.getDeck()));
     ret.setMana(player.getMana());
-    ret.setMax_mana(player.getMaxMana());
-    ret.setDeck_pos(player.getDeckPos());
-    ret.setFatigue_damage(player.getFatigueDamage());
-    for(minion : player.getMinions()) {
+    ret.setMaxMana(player.getMaxMana());
+    ret.setDeckPos(player.getDeckPos());
+    ret.setFatigueDamage(player.getFatigueDamage());
+    for(Minion minion : player.getMinions()) {
       ret.addMinions(this.convertMinion(minion));
     }
-    for(card : player.getHand()) {
+    for(Card card : player.getHand()) {
       ret.addHand(this.convertCard(card));
     }
     ret.setOverload(player.getOverload());
-    ret.setNum_cards_used(player.getNumCardsUsed());
-    return ret;
+    ret.setNumCardsUsed(player.getNumCardsUsed());
+    return ret.build();
   }
   
-  public HeroProto.Hero convertHero(HeroModel hero) {
-    HeroProto.Hero.builder ret;
+  public HeroProto.Hero convertHero(Hero hero) {
+    HeroProto.Hero.Builder ret;
     ret.setWeapon(this.convertWeapon(hero.getWeapon()));
     ret.setArmor(hero.getArmor());
     ret.setMinion(this.convertMinion(hero));
-    return ret;
+    return ret.build();
   }
   
   public WeaponProto.Weapon convertWeapon(WeaponCard weapon) {
-    WeaponProto.Weapon.builder ret;
+    WeaponProto.Weapon.Builder ret;
     ret.setName(weapon.getName());
     ret.setDurability(weapon.getWeaponCharge());
     ret.setAttack(weapon.getWeaponDamage());
-    return ret;
+    return ret.build();
   }
   
   public DeckProto.Deck convertDeck(Deck deck) {
-    DeckProto.Deck.builder ret;
-    for(card : deck.getDeck()) {
+    DeckProto.Deck.Builder ret;
+    for(Card card : deck.getDeck()) {
       ret.addCards(this.convertCard(card));
     }
-    return ret;
+    return ret.build();
   }
   
   public MinionProto.Minion convertMinion(Minion minion) {
-    MinionProto.Minion.builder ret;
+    MinionProto.Minion.Builder ret;
     ret.setTaunt(minion.getTaunt());
-    ret.setDivine_Shield(minion.getDivineShield());
+    ret.setDivineShield(minion.getDivineShield());
     ret.setWindfury(minion.getWindfury());
     ret.setCharge(minion.getCharge());
     ret.setImmune(minion.getImmune());
-    ret.setHas_attacked(minion.hasAttacked());
-    ret.setHas_windfury_attacked(minion.hasWindfuryAttacked());
+    ret.setHasAttacked(minion.hasAttacked());
+    ret.setHasWindfuryAttacked(minion.hasWindFuryAttacked());
     ret.setFrozen(minion.getFrozen());
     ret.setSilenced(minion.isSilenced());
-    ret.setStealthed_until_revealed(minion.getStealthedUntilRevealed());
-    ret.setStealthed_until_next_turn(minion.getStealthedUntilNextTurn());
-    ret.setHero_targetable(minion.isHeroTargetable());
+    ret.setStealthedUntilRevealed(minion.getStealthedUntilRevealed());
+    ret.setStealthedUntilNextTurn(minion.getStealthedUntilNextTurn());
+    ret.setHeroTargetable(minion.isHeroTargetable());
     ret.setHealth(minion.getHealth());
-    ret.setMax_health(minion.getMaxHealth());
-    ret.setAura_health(minion.getAuraHealth());
+    ret.setMaxHealth(minion.getMaxHealth());
+    ret.setAuraHealth(minion.getAuraHealth());
     ret.setAttack(minion.getBaseAttack());
-    ret.setExtra_attack_until_turn_end(minion.getExtraAttackUntilTurnEnd());
-    ret.setAura_attack(minion.getAuraAttack());
-    ret.setDestroy_on_turn_start(minion.getDestroyOnTurnStart());
-    ret.setDestroy_on_turn_end(minion.getDestroyOnTurnEnd());
-    ret.setSpell_damage(minion.getSpellDamage());
-    ret.setCant_attack(!minion.canAttack());//ADD SHIT
-    ret.setTribe(minion.getTribe());
+    ret.setExtraAttackUntilTurnEnd(minion.getExtraAttackUntilTurnEnd());
+    ret.setAuraAttack(minion.getAuraAttack());
+    ret.setDestroyOnTurnStart(minion.getDestroyOnTurnStart());
+    ret.setDestroyOnTurnEnd(minion.getDestroyOnTurnEnd());
+    ret.setSpellDamage(minion.getSpellDamage());
+    ret.setCantAttack(!minion.canAttack());//ADD SHIT
+    ret.setTribe(this.convertTribe(minion.getTribe()));
     ret.setCard(this.convertCard(minion));
-    return ret;
+    return ret.build();
   }
   
   public CardProto.Card convertCard(Card card) {
-    CardProto.Card.builder ret;
-    ret.setHas_been_used(card.hasBeenUsed());
-    ret.setIn_hand(card.getInHand());
+    CardProto.Card.Builder ret;
+    ret.setHasBeenUsed(card.hasBeenUsed());
+    ret.setInHand(card.setInHand());
     ret.setName(card.getName());
-    return ret;
+    return ret.build();
+  }
+
+  public HAOutboundProto.Action.Verb convertVerb(HearthAction.Verb verb) {
+    switch (verb) {
+      case USE_CARD :
+        return HAOutboundProto.Action.Verb.USE_CARD;
+      case HERO_ABILITY :
+        return HAOutboundProto.Action.Verb.HERO_ABILITY;
+      case ATTACK :
+        return HAOutboundProto.Action.Verb.ATTACK;
+      case UNTARGETABLE_BATTLECRY :
+        return HAOutboundProto.Action.Verb.UNTARGETABLE_BATTLECRY;
+      case TARGETABLE_BATTLECRY :
+        return HAOutboundProto.Action.Verb.TARGETABLE_BATTLECRY;
+      case START_TURN :
+        return HAOutboundProto.Action.Verb.START_TURN;
+      case END_TURN :
+        return HAOutboundProto.Action.Verb.END_TURN;
+      case DO_NOT_USE_CARD :
+        return HAOutboundProto.Action.Verb.DO_NOT_USE_CARD;
+      case DO_NOT_ATTACK :
+        return HAOutboundProto.Action.Verb.DO_NOT_ATTACK;
+      case DO_NOT_USE_HEROPOWER :
+        return HAOutboundProto.Action.Verb.DO_NOT_USE_HEROPOWER;
+      case RNG :
+        return HAOutboundProto.Action.Verb.RNG;
+      case DRAW_CARDS :
+        return HAOutboundProto.Action.Verb.DRAW_CARDS;
+      default :
+    }
+  }
+  public HAOutboundProto.Action.PlayerSide convertPlayerSide(PlayerSide side) {
+    switch (side) {
+      case CURRENT_PLAYER :
+        return HAOutboundProto.Action.PlayerSide.CURRENT_PLAYER;
+      case WAITING_PLAYER :
+        return HAOutboundProto.Action.PlayerSide.WAITING_PLAYER;
+    }
+  }
+
+  public HAOutboundProto.Action.CharacterIndex convertCharIndex(CharacterIndex index) {
+    switch (index) {
+      case HERO :
+        return HAOutboundProto.Action.CharacterIndex.HERO;
+      case MINION_1 :
+        return HAOutboundProto.Action.CharacterIndex.MINION_1;
+      case MINION_2 :
+        return HAOutboundProto.Action.CharacterIndex.MINION_2;
+      case MINION_3 :
+        return HAOutboundProto.Action.CharacterIndex.MINION_3;
+      case MINION_4 :
+        return HAOutboundProto.Action.CharacterIndex.MINION_4;
+      case MINION_5 :
+        return HAOutboundProto.Action.CharacterIndex.MINION_5;
+      case MINION_6 :
+        return HAOutboundProto.Action.CharacterIndex.MINION_6;
+      case MINION_7 :
+        return HAOutboundProto.Action.CharacterIndex.MINION_7;
+      case MINION_8 :
+        return HAOutboundProto.Action.CharacterIndex.MINION_8;
+      case MINION_9 :
+        return HAOutboundProto.Action.CharacterIndex.MINION_9;
+      case UNKNOWN :
+        return HAOutboundProto.Action.CharacterIndex.UNKNOWN;
+    }
+  }
+
+  public MinionProto.Minion.Tribe convertTribe(Minion.MinionTribe tribe) {
+    switch (tribe) {
+      case NONE :
+        return MinionProto.Minion.Tribe.NONE;
+      case BEAST :
+        return MinionProto.Minion.Tribe.BEAST;
+      case MECH :
+        return MinionProto.Minion.Tribe.MECH;
+      case MURLOC :
+        return MinionProto.Minion.Tribe.MURLOC;
+      case PIRATE :
+        return MinionProto.Minion.Tribe.PIRATE;
+      case DEMON :
+        return MinionProto.Minion.Tribe.DEMON;
+      case DRAGON :
+        return MinionProto.Minion.Tribe.DRAGON;
+      case TOTEM :
+        return MinionProto.Minion.Tribe.TOTEM;
+    }
   }
 }
