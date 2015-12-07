@@ -175,7 +175,6 @@ def update_board(l, home_m, enemy_m):
             if minion is not None:
                 minion.damage = int(l[2])
                 minion.health = minion.max_health - minion.damage
-            elif
         elif l[1] == "ARMOR":
             if home_m.player_id == int(parse_player_id(l[3])):
                 home_m.hero.armor = int(l[2])
@@ -276,7 +275,6 @@ def update_board(l, home_m, enemy_m):
                     minion.divine_shield = True
                 else:
                     minion.divine_shield = False
-        print(l)
     return home_m, enemy_m
 
 
