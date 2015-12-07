@@ -30,8 +30,8 @@ public class BruteForceSearchAI implements ArtificialPlayer {
     private final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
     private final static int MAX_THINK_TIME = 20000;
     private BoardLogger logfnc = new BoardLogger();
-	private MoveGen getMoves = new MoveGen(1);
-    private boolean useSparseBoardStateFactory_ = true;
+	private MoveGen getMoves = new MoveGen(10);
+    private boolean useSparseBoardStateFactory_ = false;
     private boolean useDuplicateNodePruning = true;
 
     public WeightedScorer scorer = new WeightedScorer();

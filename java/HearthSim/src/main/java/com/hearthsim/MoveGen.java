@@ -15,6 +15,7 @@ import com.hearthsim.exception.HSParamNotFoundException;
 import com.hearthsim.player.playercontroller.WeightedScorer;
 import com.hearthsim.util.factory.BoardStateFactoryBase;
 import com.hearthsim.util.factory.DepthBoardStateFactory;
+import com.hearthsim.util.factory.BreadthBoardStateFactory;
 import com.hearthsim.util.HearthActionBoardPair;
 import com.hearthsim.util.tree.HearthTreeNode;
 import com.hearthsim.util.tree.StopNode;
@@ -78,15 +79,17 @@ public class MoveGen {
   public List<ArrayList<HearthActionBoardPair>> getMoves(int turn, BoardModel board) throws HSException{
     PlayerModel playerModel0 = board.getCurrentPlayer();
     PlayerModel playerModel1 = board.getWaitingPlayer();
-    BoardStateFactoryBase factory = new DepthBoardStateFactory(playerModel0.getDeck(), playerModel1.getDeck(), MAX_THINK_TIME, true);
+    BoardStateFactoryBase factory = new BreadthBoardStateFactory(playerModel0.getDeck(), playerModel1.getDeck());
 
     HearthTreeNode toRet = new HearthTreeNode(board);
     HearthTreeNode rootNode = factory.doMoves(toRet, this.scorer);
+    if(rootNode.getChildren() != null) {
+      log.warn("tree generated at least " + rootNode.getChildren().size() + " children.");
+    }
     ArrayList<ArrayList<HearthActionBoardPair>> retList = new ArrayList<>();
     ArrayList<HearthTreeNode> sortedChildArray = new ArrayList<>();
 
     sortedChildArray = findChildren(rootNode);
-    
     int i = 0;
     for( HearthTreeNode endState : sortedChildArray) {
       if( i == numMoves) {
@@ -150,6 +153,7 @@ public class MoveGen {
         temp.clear();
       }
     }
+
     return ret;
   }
 }
