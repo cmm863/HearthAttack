@@ -11,7 +11,7 @@
 
 using namespace std;
 
-float valCalc(com::protos::Minion& aMinion)
+float valCalc(const com::protos::Minion& aMinion)
 {
   float totalVal = 0;
   
@@ -37,47 +37,63 @@ float valCalc(com::protos::Minion& aMinion)
 }
 
 
-float zombie_chow_val(com::protos::Board& aBoard)
+float zombie_chow_val(const com::protos::Minion& aMinion, const com::protos::Board& aBoard)
 {
   float val = 0;
   
-  if(aBoard.waitingPlayer().armor() < 20)
-    aBoard.waitingPlayer().armor() / 5.0 - 5;
+  if(aBoard.waitingplayer().hero().armor() < 20)
+    aBoard.waitingplayer().hero().armor() / 5.0 - 5;
   
   return val;
 }
 
 
-float value_of(com::protos::Minion& aMinion, com::protos::Board& aBoard)
+float value_of(const com::protos::Minion& aMinion, const com::protos::Board& aBoard)
 {
   float theScore = 0;
   
   theScore += valCalc(aMinion);
   
-  if(aMinion.name() == "Zombie Chow")
-    theScore += zombie_chow_val;
+  if(aMinion.card().name() == "Zombie Chow")
+    theScore += zombie_chow_val(aMinion, aBoard);
   
   return theScore;
 }
 
-float score_board(com::protos::Board& aBoard)
+float score_board(const com::protos::Board& aBoard)
 {
   float theScore = 0;
   
-  for(int i = 0; i < aBoard.currentPlayer().minions_size(); i++)
-    theScore += value_of(aBoard.currentPlayer().minions(i), aBoard);
-  for(int i = 0; i < aBoard().waitingPlayer().minions_size(); i++)
-    theScore -= value_of(aBoard.waitingPlayer().minions(i), aBoard);
+  for(int i = 0; i < aBoard.currentplayer().minions_size(); i++)
+    theScore += value_of(aBoard.currentplayer().minions(i), aBoard);
+  for(int i = 0; i < aBoard.waitingplayer().minions_size(); i++)
+    theScore -= value_of(aBoard.waitingplayer().minions(i), aBoard);
   
-  theScore += currentPlayer.hero.armor() * (30 - currentPlayer.hero.armor()) / 30;
-  theScore -= waitingPlayer.hero.armor() * (30 - waitingPlayer.hero.armor()) / 30;
+  theScore += aBoard.currentplayer().hero().armor() * (30 - aBoard.currentplayer().hero().armor()) / 30;
+  theScore -= aBoard.waitingplayer().hero().armor() * (30 - aBoard.waitingplayer().hero().armor()) / 30;
  
   return theScore;
 }
+//Need the Action proto to be adjusted for in order to be able to print the moves
+/*
+void printMove(const com::protos::Action& theAction, const com::protos::Board& theBoard)
+{
+  com::protos::Action_Verb verb = theAction.verb();
+  com::protos::PlayerModel playerOne = theBoard.currentplayer();
+  com::protos::PlayerModel playerTwo = theBoard.waitingplayer();
+  com::protos::Card theCard; 
 
+  theCard = theAction.card(); 
+   
+  if(verb == 1)
+  {
+    cout<<"Play the card: " <<theCard <<" targeting " 
+  }
+}
+*/
 int main()
 {
-  com::protos::moveList theList;
+  com::protos::MoveList theList;
   string msg;
   float score;
   float highscore = 0;
@@ -87,15 +103,18 @@ int main()
   
   for(int i = 0; i < theList.move_size(); i++)
   {
-    score = score_board(theList.move(i).actionBoardPair(theList.move(i).actionBoardPair_size() - 1).board());
+    score = score_board(theList.move(i).actionboardpair(0).board());
     if(score > highscore)
     {
       highscore = score;
-      hihIndex = i;
+      highIndex = i;
     }
   }
-  
-  
-  
+  /* Need the Action proto to be adjusted before this can be finished
+  for(int i = theList.move(highIndex).actionboardpair_length() - 1; i >= 0; i--)
+  {
+    printMove(theList.move(highIndex).actionboardpair(i).action());
+  }
+  */
   return 0;
 }

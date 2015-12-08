@@ -1,12 +1,14 @@
-//Translates the PlayerModelProto.PlayerModel objects read from file into BoardModel object
-//One command line argument is needed: System path for the file to be read
+//Translates the PlayerModelProto.PlayerModel objects read from socket into BoardModel object
+//One command line argument is needed: port number for server to listen on
 
 package com.hearthattack;
 
 import com.protos.*;
+import com.hearthattack.*;
 import com.hearthsim.model.*;
 import com.hearthsim.card.Card;
 import com.hearthsim.card.Deck;
+import com.hearthsim.card.CharacterIndex;
 import com.hearthsim.card.minion.Minion;
 import com.hearthsim.card.minion.Hero;
 import com.hearthsim.card.ImplementedCardList;
@@ -32,26 +34,49 @@ public class Handler {
     Lock read = rwLock.readLock();
 
     //Open Reader in new thread
-    (new Thread(new Reader(playerProto, opponentProto, update, terminate, rwLock, args[0]))).start();
+    (new Thread(new Reader(playerProto, opponentProto, update, terminate, rwLock, Integer.parseInt(args[0])))).start();
 
     while(!terminate.get()) {
+      System.out.println("Waiting for update");
       while(!update.get()); //wait for Reader to parse from log file
-        read.lock();
-        PlayerModel playerModel = makePlayerModel(cardList, playerProto);
-        PlayerModel opponentModel = makePlayerModel(cardList, opponentProto);
-        currentBoard = new BoardModel(playerModel, opponentModel);
-        update.set(false);
-        read.unlock();
+      System.out.println("Received update");
+      read.lock();
+      PlayerModel playerModel = makePlayerModel(cardList, playerProto);
+      PlayerModel opponentModel = makePlayerModel(cardList, opponentProto);
+      currentBoard = new BoardModel(playerModel, opponentModel);
+      for(int i=0,j=0; i<playerProto.getMinionsCount() || j<opponentProto.getMinionsCount(); ){
+        if(i>=playerProto.getMinionsCount()){
+          currentBoard.placeMinion(PlayerSide.WAITING_PLAYER, makeMinion(cardList,opponentProto.getMinions(j)),
+                                   CharacterIndex.fromInteger(opponentProto.getMinions(j).getPosition()));
+          ++j;
+        } else if(j>=opponentProto.getMinionsCount()){
+          currentBoard.placeMinion(PlayerSide.CURRENT_PLAYER, makeMinion(cardList,playerProto.getMinions(i)),
+                                   CharacterIndex.fromInteger(playerProto.getMinions(i).getPosition()));
+          ++i;
+        } else if(playerProto.getMinions(i).getTurnPlayed() < opponentProto.getMinions(j).getTurnPlayed()){
+          currentBoard.placeMinion(PlayerSide.WAITING_PLAYER, makeMinion(cardList,playerProto.getMinions(i)),
+                                   CharacterIndex.fromInteger(playerProto.getMinions(i).getPosition()));
+          ++i;
+        } else{
+          currentBoard.placeMinion(PlayerSide.WAITING_PLAYER, makeMinion(cardList,opponentProto.getMinions(j)),
+                                   CharacterIndex.fromInteger(opponentProto.getMinions(j).getPosition()));
+          ++j;
+        }
+      }
+      update.set(false);
+      read.unlock();
       if(currentBoard.isDead(PlayerSide.CURRENT_PLAYER) || currentBoard.isDead(PlayerSide.WAITING_PLAYER)) {
         terminate.set(true);
         break;
       }
-      //send currentBoard to tree generator
+      System.out.println("Updated board");
     }
   }
   
   public static Card makeCard(ImplementedCardList cardList, CardProto.Card in){
-    Card out = cardList.getCardForName(in.getName()).createCardInstance();
+    Card out = new Card();
+    if(cardList.getCardForName(in.getName())!=null)
+      out = cardList.getCardForName(in.getName()).createCardInstance();
     out.setInHand(in.getInHand());
     out.hasBeenUsed(in.getHasBeenUsed());
     return out;
@@ -105,7 +130,9 @@ public class Handler {
   }
   
   public static WeaponCard makeWeapon(ImplementedCardList cardList, WeaponProto.Weapon in){
-    WeaponCard out = (WeaponCard)cardList.getCardForName(in.getName()).createCardInstance();
+    WeaponCard out = (WeaponCard)new Card();
+    if(cardList.getCardForName(in.getName())!=null)
+      out = (WeaponCard)cardList.getCardForName(in.getName()).createCardInstance();
     out.setWeaponDamage((byte)in.getAttack());
     out.setWeaponCharge((byte)in.getDurability());
     return out;
@@ -142,8 +169,12 @@ public class Handler {
       out.setDeckPos((byte)in.getDeckPos());
     if(in.hasFatigueDamage())
       out.setFatigueDamage((byte)in.getFatigueDamage());
-    for(int i=0; i<in.getMinionsCount(); ++i)
-      out.addMinion(i,makeMinion(cardList,in.getMinions(i)));
+/*    for(int i=0; i<in.getMinionsCount(); ++i){
+      for(int j=0; j<in.getMinionsCount(); ++j){
+        if(in.getMinions(j).getPosition() == i)
+          out.addMinion(i,makeMinion(cardList,in.getMinions(i)));
+      }
+    }*/
     out.setHand(makeHand(cardList,in));
     if(in.hasOverload())
       out.setOverload((byte)in.getOverload());
