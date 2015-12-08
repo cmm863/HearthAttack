@@ -1,0 +1,11 @@
+package com.protos;
+
+option java_package = "com.protos";
+option java_outer_classname = "BoardModelProto";
+
+import "player_model.proto";
+
+message BoardModel{
+  required PlayerModel player = 1;
+  required PlayerModel opponent = 2;
+}
