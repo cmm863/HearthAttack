@@ -1,10 +1,4 @@
-from protos import deck_pb2, hero_pb2, card_pb2, player_model_pb2, weapon_pb2, minion_pb2, update_pb2
-from helpers import *
 from myconfig import *
-
-from pprint import pprint
-import suggestion
-import time
 from handler import *
 
 

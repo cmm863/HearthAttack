@@ -21,4 +21,7 @@ message PlayerModel {
   repeated Card hand = 10;
   optional int32 overload = 11;
   optional int32 num_cards_used = 12;
+  optional int32 turn_number = 13;
+  optional bool current_player = 14;
+  optional bool submit = 15;
 }

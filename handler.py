@@ -2,6 +2,7 @@ __author__ = 'connor'
 from protos import deck_pb2, hero_pb2, card_pb2, player_model_pb2, weapon_pb2, minion_pb2, update_pb2
 import json
 from helpers import *
+import socket
 
 expansion_sets = [
     "Basic",
@@ -11,12 +12,6 @@ expansion_sets = [
     "Goblins vs Gnomes",
     "The Grand Tournament",
     "League of Explorers"
-]
-
-mechanics = [
-    "Taunt",
-    "Battlecry",
-    "Charge"
 ]
 
 
@@ -46,18 +41,47 @@ def update_board(l, home_m, enemy_m):
             card.id = int(l[2])
             home_m.hand.extend([card])
             home_m.deck.cards.remove(card)
+            if home_m.submit:
+                s = socket.socket()
+                port = 3333
+                s.connect(('127.0.0.1', port))
+                s.send(home_m.SerializeToString())
+                print s.recv(1024)
+                s.close()
+                home_m.submit = False
+
         elif l[1] == "OPPOSING HAND":
             # Card returned to opp hand
             pass
         elif l[1] == "FRIENDLY PLAY (Hero)":
             # Your Hero
-            pass
+            hero = hero_pb2.Hero()
+            minion = minion_pb2.Minion()
+            card = card_pb2.Card()
+            card.name = l[3]
+            card.id = int(l[2])
+            minion.card.CopyFrom(card)
+            minion.health = 30
+            minion.max_health = 30
+            minion.damage = 0
+            hero.minion.CopyFrom(minion)
+            home_m.hero.CopyFrom(hero)
         elif l[1] == "FRIENDLY PLAY (Hero Power)":
             # Your Hero Power
             pass
         elif l[1] == "OPPOSING PLAY (Hero)":
             # Opp Hero
-            pass
+            hero = hero_pb2.Hero()
+            minion = minion_pb2.Minion()
+            card = card_pb2.Card()
+            card.name = l[3]
+            card.id = int(l[2])
+            minion.card.CopyFrom(card)
+            minion.health = 30
+            minion.max_health = 30
+            minion.damage = 0
+            hero.minion.CopyFrom(minion)
+            enemy_m.hero.CopyFrom(hero)
         elif l[1] == "OPPOSING PLAY (Hero Power)":
             # Opp Hero Power
             pass
@@ -65,30 +89,29 @@ def update_board(l, home_m, enemy_m):
             # Returned card to deck
             print("Mulliganed: " + l[3])
             card = get_card_from_hand(home_m, l[2])
+            if card is None:
+                return home_m, enemy_m
             card.in_hand = False
             home_m.hand.remove(card)
             home_m.deck.cards.extend([card])
         elif l[1] == "FRIENDLY PLAY":
             # Friendly Minion
-            print(l[3])
             card = get_card_from_hand(home_m, l[2])
             if card is None:
                 if len(l[3]) > 0:
-                    print(l[3])
                     card = card_pb2.Card()
                     card.has_been_used = False
                     card.in_hand = False
                     card.name = l[3]
                     card.id = int(l[2])
-                    print(card)
                     minion = return_minion(card)
-                    print(minion)
                     home_m.minions.extend([minion])
                 return home_m, enemy_m
             print("Summoned: " + l[3])
             card.in_hand = False
             home_m.hand.remove(card)
             minion = return_minion(card)
+            minion.turn_played = home_m.turn_number
             home_m.minions.extend([minion])
             #output_minions(home_m)
         elif l[1] == "OPPOSING PLAY":
@@ -100,6 +123,7 @@ def update_board(l, home_m, enemy_m):
             card.name = l[3]
             card.id = int(l[2])
             minion = return_minion(card)
+            minion.turn_played = enemy_m.turn_number
             enemy_m.minions.extend([minion])
             #output_minions(enemy_m)
         elif l[1] == "FRIENDLY SECRET":
@@ -119,6 +143,11 @@ def update_board(l, home_m, enemy_m):
                     break
             if minion is not None:
                 home_m.minions.remove(minion)
+            else:
+                for c in home_m.hand:
+                    if c.id == int(l[2]):
+                        home_m.hand.remove(c)
+                        break
             #output_minions(home_m)
         elif l[1] == "OPPOSING GRAVEYARD":
             # Opp card is gone
@@ -160,7 +189,8 @@ def update_board(l, home_m, enemy_m):
         elif l[1] == "TURN":
             # value = turn number
             print("TURN: " + l[2])
-            pass
+            enemy_m.turn_number = int(l[2])
+            home_m.turn_number = int(l[2])
         elif l[1] == "RESOURCES":
             if l[3] == "MiRaGe":
                 home_m.mana = int(l[2])
@@ -175,6 +205,13 @@ def update_board(l, home_m, enemy_m):
             if minion is not None:
                 minion.damage = int(l[2])
                 minion.health = minion.max_health - minion.damage
+            elif parse_card_id(l[3])[:4] == "HERO":
+                if home_m.player_id == int(parse_player_id(l[3])):
+                    home_m.hero.minion.damage = int(l[2])
+                    home_m.hero.minion.health = home_m.hero.minion.max_health - home_m.hero.minion.damage
+                else:
+                    enemy_m.hero.minion.damage = int(l[2])
+                    enemy_m.hero.minion.health = enemy_m.hero.minion.max_health - enemy_m.hero.minion.damage
         elif l[1] == "ARMOR":
             if home_m.player_id == int(parse_player_id(l[3])):
                 home_m.hero.armor = int(l[2])
@@ -275,6 +312,19 @@ def update_board(l, home_m, enemy_m):
                     minion.divine_shield = True
                 else:
                     minion.divine_shield = False
+        elif l[1] == "CURRENT_PLAYER":
+            print("Current player: " + l[3] + " " + l[2])
+            if l[3] == home_m.name:
+                if int(l[2]) == 1:
+                    home_m.current_player = True
+                    home_m.submit = True
+                else:
+                    home_m.current_player = False
+            else:
+                if int(l[2]) == 1:
+                    enemy_m.current_player = True
+                else:
+                    enemy_m.current_player = False
     return home_m, enemy_m
 
 

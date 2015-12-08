@@ -24,6 +24,8 @@ def parse_value(line):
     return line.split("value=",1)[1].strip('\n')
 def parse_player_id(line):
     return line.split("player=",1)[1].split("]")[0]
+def parse_card_id(line):
+    return line.split("cardId=",1)[1].split(" ",1)[0]
 def getSeek(logfile):
   logfile.seek(0,2)
   line = ''
