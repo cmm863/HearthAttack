@@ -1,1 +1,1 @@
-configFile = "/Users/connor/Library/Logs/Unity/Player.log"
+configFile = "C:\Program Files (x86)\Hearthstone\Hearthstone_Data\output_log.txt"
