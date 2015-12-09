@@ -47,19 +47,19 @@ public class Handler {
       for(int i=0,j=0; i<playerProto.getMinionsCount() || j<opponentProto.getMinionsCount(); ){
         if(i>=playerProto.getMinionsCount()){
           currentBoard.placeMinion(PlayerSide.WAITING_PLAYER, makeMinion(cardList,opponentProto.getMinions(j)),
-                                   CharacterIndex.fromInteger(opponentProto.getMinions(j).getPosition()));
+                                   CharacterIndex.fromInteger(j));
           ++j;
         } else if(j>=opponentProto.getMinionsCount()){
           currentBoard.placeMinion(PlayerSide.CURRENT_PLAYER, makeMinion(cardList,playerProto.getMinions(i)),
-                                   CharacterIndex.fromInteger(playerProto.getMinions(i).getPosition()));
+                                   CharacterIndex.fromInteger(i));
           ++i;
         } else if(playerProto.getMinions(i).getTurnPlayed() < opponentProto.getMinions(j).getTurnPlayed()){
-          currentBoard.placeMinion(PlayerSide.WAITING_PLAYER, makeMinion(cardList,playerProto.getMinions(i)),
-                                   CharacterIndex.fromInteger(playerProto.getMinions(i).getPosition()));
+          currentBoard.placeMinion(PlayerSide.CURRENT_PLAYER, makeMinion(cardList,playerProto.getMinions(i)),
+                                   CharacterIndex.fromInteger(i));
           ++i;
         } else{
           currentBoard.placeMinion(PlayerSide.WAITING_PLAYER, makeMinion(cardList,opponentProto.getMinions(j)),
-                                   CharacterIndex.fromInteger(opponentProto.getMinions(j).getPosition()));
+                                   CharacterIndex.fromInteger(j));
           ++j;
         }
       }

@@ -33,7 +33,7 @@ message Minion {
   required int32 turn_played = 25;
   optional int32 damage = 26;
   optional bool deathrattle = 27;
-  required int32 position = 28;
+  optional int32 position = 28;
   enum Tribe {
     NONE = 0;
     BEAST = 1;
