@@ -22,7 +22,7 @@ public class Tester {
                                                             .setMaxMana(0).addMinions(minion).addHand(card).build();
       BoardModelProto.BoardModel board = BoardModelProto.BoardModel.newBuilder().setPlayer(player).setOpponent(player).build();
       byte[] message = board.toByteArray();
-    out.writeInt(message.length);
+      out.writeInt(message.length);
       out.write(message);
       out.flush();
       System.in.read();

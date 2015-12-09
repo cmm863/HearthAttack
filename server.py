@@ -1,14 +1,14 @@
 __author__ = 'connor'
 # first of all import the socket library
 import socket
-from protos import deck_pb2, hero_pb2, card_pb2, player_model_pb2, weapon_pb2, minion_pb2, update_pb2
+from protos import deck_pb2, hero_pb2, card_pb2, player_model_pb2, weapon_pb2, minion_pb2, update_pb2, board_model_pb2
 # next create a socket object
 s = socket.socket()
 print "Socket successfully created"
 
 # reserve a port on your computer in our
 # case it is 12345 but it can be anything
-port = 3333
+port = 3332
 
 # Next bind to the port
 # we have not typed any ip in the ip field
@@ -30,9 +30,9 @@ while True:
    print 'Got connection from', addr
 
    data = c.recv(4096)
-   player_model = player_model_pb2.PlayerModel()
-   player_model.ParseFromString(data)
-   print(player_model)
+   board_model = board_model_pb2.BoardModel()
+   board_model.ParseFromString(data)
+   print(board_model)
 
    # send a thank you message to the client.
    c.send('Thank you for connecting')
