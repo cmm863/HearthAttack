@@ -14,14 +14,16 @@ import com.hearthsim.card.minion.Hero;
 import com.hearthsim.card.ImplementedCardList;
 import com.hearthsim.card.weapon.WeaponCard;
 import com.hearthsim.exception.HSException;
+import com.hearthsim.card.basic.weapon.FieryWarAxe;
+import com.hearthsim.card.minion.heroes.TestHero;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.List;
 import java.lang.Runnable;
 import java.lang.Thread;
 import java.io.IOException;
+import java.lang.reflect.*;
 
 public class Handler {
   public static void main(String[] args) throws IOException, HSException {
@@ -89,7 +91,25 @@ public class Handler {
   }
   
   public static Minion makeMinion(ImplementedCardList cardList, MinionProto.Minion in){
-    Minion out = (Minion)makeCard(cardList,in.getCard());
+    Minion out = new Minion();
+    try{
+      if(cardList.getCardForName(in.getCard().getName())!=null)
+        out = (Minion)cardList.getCardForName(in.getCard().getName()).cardClass_.getConstructor().newInstance();
+    }
+    catch (NoSuchMethodException e) {
+      System.out.println("NoSuchMethodException");
+    }
+    catch (InstantiationException e) {
+      System.out.println("InstantiationException");
+    }
+    catch (IllegalAccessException e) {
+      System.out.println("IllegalAccessException");
+    }
+    catch (InvocationTargetException e) {
+      System.out.println("InvocationTargetException");
+    }
+    out.setInHand(in.getCard().getInHand());
+    out.hasBeenUsed(in.getCard().getHasBeenUsed());
     if(in.hasTaunt())
       out.setTaunt(in.getTaunt());
     if(in.hasDivineShield())
@@ -136,18 +156,94 @@ public class Handler {
   }
   
   public static WeaponCard makeWeapon(ImplementedCardList cardList, WeaponProto.Weapon in){
-    WeaponCard out = (WeaponCard)new Card();
-    if(cardList.getCardForName(in.getName())!=null)
-      out = (WeaponCard)cardList.getCardForName(in.getName()).createCardInstance();
+    WeaponCard out = new FieryWarAxe();
+    try{
+      if(cardList.getCardForName(in.getName())!=null)
+        out = (WeaponCard)cardList.getCardForName(in.getName()).cardClass_.getConstructor().newInstance();
+    }
+    catch (NoSuchMethodException e) {
+      System.out.println("NoSuchMethodException");
+    }
+    catch (InstantiationException e) {
+      System.out.println("InstantiationException");
+    }
+    catch (IllegalAccessException e) {
+      System.out.println("IllegalAccessException");
+    }
+    catch (InvocationTargetException e) {
+      System.out.println("InvocationTargetException");
+    }
+    out.setInHand(false);
+    out.hasBeenUsed(true);
     out.setWeaponDamage((byte)in.getAttack());
     out.setWeaponCharge((byte)in.getDurability());
     return out;
   }
   
   public static Hero makeHero(ImplementedCardList cardList, HeroProto.Hero in){
-    Hero out = (Hero)makeMinion(cardList,in.getMinion());
+    Hero out = new TestHero();
+    try{
+      if(cardList.getCardForName(in.getMinion().getCard().getName())!=null)
+        out = (Hero)cardList.getCardForName(in.getMinion().getCard().getName()).cardClass_.getConstructor().newInstance();
+    }
+    catch (NoSuchMethodException e) {
+      System.out.println("NoSuchMethodException");
+    }
+    catch (InstantiationException e) {
+      System.out.println("InstantiationException");
+    }
+    catch (IllegalAccessException e) {
+      System.out.println("IllegalAccessException");
+    }
+    catch (InvocationTargetException e) {
+      System.out.println("InvocationTargetException");
+    }
+    out.setInHand(in.getMinion().getCard().getInHand());
+    out.hasBeenUsed(in.getMinion().getCard().getHasBeenUsed());
     out.setWeapon(makeWeapon(cardList,in.getWeapon()));
     out.setArmor((byte)in.getArmor());
+    if(in.getMinion().hasTaunt())
+      out.setTaunt(in.getMinion().getTaunt());
+    if(in.getMinion().hasDivineShield())
+      out.setDivineShield(in.getMinion().getDivineShield());
+    if(in.getMinion().hasWindfury())
+      out.setWindfury(in.getMinion().getWindfury());
+    if(in.getMinion().hasCharge())
+      out.setCharge(in.getMinion().getCharge());
+    if(in.getMinion().hasImmune())
+      out.setImmune(in.getMinion().getImmune());
+    if(in.getMinion().hasHasAttacked())
+      out.hasAttacked(in.getMinion().getHasAttacked());
+    if(in.getMinion().hasHasWindfuryAttacked())
+      out.hasWindFuryAttacked(in.getMinion().getHasWindfuryAttacked());
+    if(in.getMinion().hasFrozen())
+      out.setFrozen(in.getMinion().getFrozen());
+    //setSilenced() setter function is protected in Minion class
+    if(in.getMinion().hasStealthedUntilRevealed())
+      out.setStealthedUntilRevealed(in.getMinion().getStealthedUntilRevealed());
+    if(in.getMinion().hasStealthedUntilNextTurn())
+      out.setStealthedUntilNextTurn(in.getMinion().getStealthedUntilNextTurn());
+    if(in.getMinion().hasHeroTargetable())
+      out.setHeroTargetable(in.getMinion().getHeroTargetable());
+    if(in.getMinion().hasHealth())
+      out.setHealth((byte)in.getMinion().getHealth());
+    out.setMaxHealth((byte)in.getMinion().getMaxHealth());
+    if(in.getMinion().hasAuraHealth())
+      out.setAuraHealth((byte)in.getMinion().getAuraHealth());
+    if(in.getMinion().hasAttack())
+      out.setAttack((byte)in.getMinion().getAttack());
+    if(in.getMinion().hasExtraAttackUntilTurnEnd())
+      out.setExtraAttackUntilTurnEnd((byte)in.getMinion().getExtraAttackUntilTurnEnd());
+    if(in.getMinion().hasAuraAttack())
+      out.setAuraAttack((byte)in.getMinion().getAuraAttack());
+    if(in.getMinion().hasDestroyOnTurnStart())
+      out.setDestroyOnTurnStart(in.getMinion().getDestroyOnTurnStart());
+    if(in.getMinion().hasDestroyOnTurnEnd())
+      out.setDestroyOnTurnEnd(in.getMinion().getDestroyOnTurnEnd());
+    if(in.getMinion().hasSpellDamage())
+      out.setSpellDamage((byte)in.getMinion().getSpellDamage());
+    //CantAttack has no setter function in Minion class
+    //Tribe cannot be set for Minion Class, always retrieved from ImplementedCardList
     return out;
   }
   

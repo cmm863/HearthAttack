@@ -361,9 +361,12 @@ def update_board(l, home_m, enemy_m):
                     minion.divine_shield = False
         elif l[1] == "CURRENT_PLAYER":
             if l[3] == home_m.name:
+                print "before if"
                 if int(l[2]) == 1:
+                    print "before set"
                     home_m.current_player = True
                     home_m.submit = True
+                    print "after submit"
                 else:
                     home_m.current_player = False
             else:
@@ -371,7 +374,9 @@ def update_board(l, home_m, enemy_m):
                     enemy_m.current_player = True
                 else:
                     enemy_m.current_player = False
+        print l
     return home_m, enemy_m
+
 
 
 def output_hand(home_m):

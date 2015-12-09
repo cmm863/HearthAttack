@@ -260,11 +260,11 @@ public final class MinionProto {
     boolean getDeathrattle();
 
     /**
-     * <code>required int32 position = 28;</code>
+     * <code>optional int32 position = 28;</code>
      */
     boolean hasPosition();
     /**
-     * <code>required int32 position = 28;</code>
+     * <code>optional int32 position = 28;</code>
      */
     int getPosition();
   }
@@ -1064,13 +1064,13 @@ public final class MinionProto {
     public static final int POSITION_FIELD_NUMBER = 28;
     private int position_;
     /**
-     * <code>required int32 position = 28;</code>
+     * <code>optional int32 position = 28;</code>
      */
     public boolean hasPosition() {
       return ((bitField0_ & 0x08000000) == 0x08000000);
     }
     /**
-     * <code>required int32 position = 28;</code>
+     * <code>optional int32 position = 28;</code>
      */
     public int getPosition() {
       return position_;
@@ -1117,10 +1117,6 @@ public final class MinionProto {
         return false;
       }
       if (!hasTurnPlayed()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasPosition()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -1772,10 +1768,6 @@ public final class MinionProto {
           return false;
         }
         if (!hasTurnPlayed()) {
-          
-          return false;
-        }
-        if (!hasPosition()) {
           
           return false;
         }
@@ -2758,19 +2750,19 @@ public final class MinionProto {
 
       private int position_ ;
       /**
-       * <code>required int32 position = 28;</code>
+       * <code>optional int32 position = 28;</code>
        */
       public boolean hasPosition() {
         return ((bitField0_ & 0x08000000) == 0x08000000);
       }
       /**
-       * <code>required int32 position = 28;</code>
+       * <code>optional int32 position = 28;</code>
        */
       public int getPosition() {
         return position_;
       }
       /**
-       * <code>required int32 position = 28;</code>
+       * <code>optional int32 position = 28;</code>
        */
       public Builder setPosition(int value) {
         bitField0_ |= 0x08000000;
@@ -2779,7 +2771,7 @@ public final class MinionProto {
         return this;
       }
       /**
-       * <code>required int32 position = 28;</code>
+       * <code>optional int32 position = 28;</code>
        */
       public Builder clearPosition() {
         bitField0_ = (bitField0_ & ~0x08000000);
@@ -2830,7 +2822,7 @@ public final class MinionProto {
       "e\030\027 \001(\0162\030.com.protos.Minion.Tribe\022\036\n\004car" +
       "d\030\030 \002(\0132\020.com.protos.Card\022\023\n\013turn_played" +
       "\030\031 \002(\005\022\016\n\006damage\030\032 \001(\005\022\023\n\013deathrattle\030\033 " +
-      "\001(\010\022\020\n\010position\030\034 \002(\005\"`\n\005Tribe\022\010\n\004NONE\020\000" +
+      "\001(\010\022\020\n\010position\030\034 \001(\005\"`\n\005Tribe\022\010\n\004NONE\020\000" +
       "\022\t\n\005BEAST\020\001\022\010\n\004MECH\020\002\022\n\n\006MURLOC\020\003\022\n\n\006PIR" +
       "ATE\020\004\022\t\n\005DEMON\020\005\022\n\n\006DRAGON\020\006\022\t\n\005TOTEM\020\007B",
       "\031\n\ncom.protosB\013MinionProto"
