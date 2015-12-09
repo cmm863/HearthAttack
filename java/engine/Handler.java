@@ -13,6 +13,10 @@ import com.hearthsim.card.minion.Minion;
 import com.hearthsim.card.minion.Hero;
 import com.hearthsim.card.ImplementedCardList;
 import com.hearthsim.card.weapon.WeaponCard;
+import com.hearthsim.exception.HSException;
+
+import com.hearthattack.Messenger;
+import com.hearthattack.moveGen;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -20,11 +24,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.List;
 import java.lang.Runnable;
 import java.lang.Thread;
+import java.io.IOException;
 
 public class Handler {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException, HSException {
     boolean gameOver = false;
     BoardModel currentBoard;
+    moveGen movegen = new moveGen(10);
+    Messenger message = new Messenger();
+    int turn;
     PlayerModelProto.PlayerModel playerProto = PlayerModelProto.PlayerModel.getDefaultInstance();
     PlayerModelProto.PlayerModel opponentProto = PlayerModelProto.PlayerModel.getDefaultInstance();
     ImplementedCardList cardList = ImplementedCardList.getInstance();
@@ -63,13 +71,14 @@ public class Handler {
           ++j;
         }
       }
+      turn = playerProto.getTurnNumber();
       update.set(false);
       read.unlock();
       if(currentBoard.isDead(PlayerSide.CURRENT_PLAYER) || currentBoard.isDead(PlayerSide.WAITING_PLAYER)) {
         terminate.set(true);
         break;
       }
-      System.out.println("Updated board");
+      message.send(movegen.getMoves(turn, currentBoard));
     }
   }
   

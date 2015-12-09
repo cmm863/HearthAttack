@@ -35,17 +35,17 @@ public class Messenger {
   HAOutboundProto.MoveList.Builder msg = HAOutboundProto.MoveList.newBuilder();
   FileOutputStream output;
   
-  public Messenger() {
+  public Messenger() throws FileNotFoundException {
     output =  new FileOutputStream("default.log");
   }
   
-  public Messenger(String arg) {
+  public Messenger(String arg) throws FileNotFoundException {
     output = new FileOutputStream(arg);
   }
-  public void send(List<ArrayList<HearthActionBoardPair>> moveSet) {
+  public void send(List<ArrayList<HearthActionBoardPair>> moveSet) throws IOException {
     msg.clear();
     HAOutboundProto.HABP val;
-    HAOutboundProto.MoveList.HABPList.Builder move;
+    HAOutboundProto.MoveList.HABPList.Builder move = HAOutboundProto.MoveList.HABPList.newBuilder();
     for(int i = 0; i < moveSet.size(); i++) {
       move.clear();
       for(int j = 0; j < moveSet.get(i).size(); j++) {
@@ -58,21 +58,21 @@ public class Messenger {
   }
   
   public HAOutboundProto.HABP convertABP(HearthActionBoardPair abp) {
-    HAOutboundProto.HABP.Builder ret;
+    HAOutboundProto.HABP.Builder ret = HAOutboundProto.HABP.newBuilder();
     ret.setBoard(this.convertBoard(abp.board));
     ret.setAction(this.convertAction(abp.action));
     return ret.build();
   }
   
   public HAOutboundProto.Board convertBoard(BoardModel board) {
-    HAOutboundProto.Board.Builder ret;
+    HAOutboundProto.Board.Builder ret = HAOutboundProto.Board.newBuilder();
     ret.setCurrentPlayer(this.convertPlayer(board.getCurrentPlayer()));
     ret.setWaitingPlayer(this.convertPlayer(board.getWaitingPlayer()));
     return ret.build();
   }
   
   public HAOutboundProto.Action convertAction(HearthAction action) {
-    HAOutboundProto.Action.Builder ret;
+    HAOutboundProto.Action.Builder ret = HAOutboundProto.Action.newBuilder();
     ret.setVerb(this.convertVerb(action.verb_));
     ret.setActionPerformerPlayerSide(this.convertPlayerSide(action.getAPPS()));
     ret.setCardOrCharacterIndex(action.getIndex());
@@ -82,7 +82,7 @@ public class Messenger {
   }
   
   public PlayerModelProto.PlayerModel convertPlayer(PlayerModel player) {
-    PlayerModelProto.PlayerModel.Builder ret;
+    PlayerModelProto.PlayerModel.Builder ret = PlayerModelProto.PlayerModel.newBuilder();
     ret.setName(player.getName());
     ret.setPlayerId(player.getPlayerId());
     ret.setHero(this.convertHero(player.getHero()));
@@ -103,7 +103,7 @@ public class Messenger {
   }
   
   public HeroProto.Hero convertHero(Hero hero) {
-    HeroProto.Hero.Builder ret;
+    HeroProto.Hero.Builder ret = HeroProto.Hero.newBuilder();
     ret.setWeapon(this.convertWeapon(hero.getWeapon()));
     ret.setArmor(hero.getArmor());
     ret.setMinion(this.convertMinion(hero));
@@ -111,7 +111,7 @@ public class Messenger {
   }
   
   public WeaponProto.Weapon convertWeapon(WeaponCard weapon) {
-    WeaponProto.Weapon.Builder ret;
+    WeaponProto.Weapon.Builder ret = WeaponProto.Weapon.newBuilder();
     ret.setName(weapon.getName());
     ret.setDurability(weapon.getWeaponCharge());
     ret.setAttack(weapon.getWeaponDamage());
@@ -119,7 +119,7 @@ public class Messenger {
   }
   
   public DeckProto.Deck convertDeck(Deck deck) {
-    DeckProto.Deck.Builder ret;
+    DeckProto.Deck.Builder ret = DeckProto.Deck.newBuilder();
     for(Card card : deck.getDeck()) {
       ret.addCards(this.convertCard(card));
     }
@@ -127,7 +127,7 @@ public class Messenger {
   }
   
   public MinionProto.Minion convertMinion(Minion minion) {
-    MinionProto.Minion.Builder ret;
+    MinionProto.Minion.Builder ret = MinionProto.Minion.newBuilder();
     ret.setTaunt(minion.getTaunt());
     ret.setDivineShield(minion.getDivineShield());
     ret.setWindfury(minion.getWindfury());
@@ -156,7 +156,7 @@ public class Messenger {
   }
   
   public CardProto.Card convertCard(Card card) {
-    CardProto.Card.Builder ret;
+    CardProto.Card.Builder ret = CardProto.Card.newBuilder();
     ret.setHasBeenUsed(card.hasBeenUsed());
     ret.setInHand(card.setInHand());
     ret.setName(card.getName());
@@ -190,6 +190,7 @@ public class Messenger {
       case DRAW_CARDS :
         return HAOutboundProto.Action.Verb.DRAW_CARDS;
       default :
+        return HAOutboundProto.Action.Verb.RNG;
     }
   }
   public HAOutboundProto.Action.PlayerSide convertPlayerSide(PlayerSide side) {
@@ -199,6 +200,7 @@ public class Messenger {
       case WAITING_PLAYER :
         return HAOutboundProto.Action.PlayerSide.WAITING_PLAYER;
     }
+    return HAOutboundProto.Action.PlayerSide.WAITING_PLAYER;
   }
 
   public HAOutboundProto.Action.CharacterIndex convertCharIndex(CharacterIndex index) {
@@ -226,6 +228,7 @@ public class Messenger {
       case UNKNOWN :
         return HAOutboundProto.Action.CharacterIndex.UNKNOWN;
     }
+    return HAOutboundProto.Action.CharacterIndex.UNKNOWN;
   }
 
   public MinionProto.Minion.Tribe convertTribe(Minion.MinionTribe tribe) {
@@ -247,5 +250,6 @@ public class Messenger {
       case TOTEM :
         return MinionProto.Minion.Tribe.TOTEM;
     }
+    return MinionProto.Minion.Tribe.NONE;
   }
 }
