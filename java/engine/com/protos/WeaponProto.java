@@ -43,6 +43,15 @@ public final class WeaponProto {
      * <code>required int32 attack = 3;</code>
      */
     int getAttack();
+
+    /**
+     * <code>optional int32 damage = 4;</code>
+     */
+    boolean hasDamage();
+    /**
+     * <code>optional int32 damage = 4;</code>
+     */
+    int getDamage();
   }
   /**
    * Protobuf type {@code com.protos.Weapon}
@@ -110,6 +119,11 @@ public final class WeaponProto {
             case 24: {
               bitField0_ |= 0x00000004;
               attack_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              damage_ = input.readInt32();
               break;
             }
           }
@@ -224,10 +238,26 @@ public final class WeaponProto {
       return attack_;
     }
 
+    public static final int DAMAGE_FIELD_NUMBER = 4;
+    private int damage_;
+    /**
+     * <code>optional int32 damage = 4;</code>
+     */
+    public boolean hasDamage() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional int32 damage = 4;</code>
+     */
+    public int getDamage() {
+      return damage_;
+    }
+
     private void initFields() {
       name_ = "";
       durability_ = 0;
       attack_ = 0;
+      damage_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -263,6 +293,9 @@ public final class WeaponProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt32(3, attack_);
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, damage_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -283,6 +316,10 @@ public final class WeaponProto {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, attack_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, damage_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -407,6 +444,8 @@ public final class WeaponProto {
         bitField0_ = (bitField0_ & ~0x00000002);
         attack_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        damage_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -447,6 +486,10 @@ public final class WeaponProto {
           to_bitField0_ |= 0x00000004;
         }
         result.attack_ = attack_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.damage_ = damage_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -473,6 +516,9 @@ public final class WeaponProto {
         }
         if (other.hasAttack()) {
           setAttack(other.getAttack());
+        }
+        if (other.hasDamage()) {
+          setDamage(other.getDamage());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -653,6 +699,38 @@ public final class WeaponProto {
         return this;
       }
 
+      private int damage_ ;
+      /**
+       * <code>optional int32 damage = 4;</code>
+       */
+      public boolean hasDamage() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional int32 damage = 4;</code>
+       */
+      public int getDamage() {
+        return damage_;
+      }
+      /**
+       * <code>optional int32 damage = 4;</code>
+       */
+      public Builder setDamage(int value) {
+        bitField0_ |= 0x00000008;
+        damage_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 damage = 4;</code>
+       */
+      public Builder clearDamage() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        damage_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.protos.Weapon)
     }
 
@@ -678,9 +756,10 @@ public final class WeaponProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014weapon.proto\022\ncom.protos\":\n\006Weapon\022\014\n\004" +
+      "\n\014weapon.proto\022\ncom.protos\"J\n\006Weapon\022\014\n\004" +
       "name\030\001 \002(\t\022\022\n\ndurability\030\002 \002(\005\022\016\n\006attack" +
-      "\030\003 \002(\005B\031\n\ncom.protosB\013WeaponProto"
+      "\030\003 \002(\005\022\016\n\006damage\030\004 \001(\005B\031\n\ncom.protosB\013We" +
+      "aponProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -699,7 +778,7 @@ public final class WeaponProto {
     internal_static_com_protos_Weapon_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_protos_Weapon_descriptor,
-        new java.lang.String[] { "Name", "Durability", "Attack", });
+        new java.lang.String[] { "Name", "Durability", "Attack", "Damage", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

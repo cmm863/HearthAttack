@@ -13,24 +13,24 @@ public final class HeroProto {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required .com.protos.Weapon weapon = 1;</code>
+     * <code>optional .com.protos.Weapon weapon = 1;</code>
      */
     boolean hasWeapon();
     /**
-     * <code>required .com.protos.Weapon weapon = 1;</code>
+     * <code>optional .com.protos.Weapon weapon = 1;</code>
      */
     com.protos.WeaponProto.Weapon getWeapon();
     /**
-     * <code>required .com.protos.Weapon weapon = 1;</code>
+     * <code>optional .com.protos.Weapon weapon = 1;</code>
      */
     com.protos.WeaponProto.WeaponOrBuilder getWeaponOrBuilder();
 
     /**
-     * <code>required int32 armor = 2;</code>
+     * <code>optional int32 armor = 2;</code>
      */
     boolean hasArmor();
     /**
-     * <code>required int32 armor = 2;</code>
+     * <code>optional int32 armor = 2;</code>
      */
     int getArmor();
 
@@ -173,19 +173,19 @@ public final class HeroProto {
     public static final int WEAPON_FIELD_NUMBER = 1;
     private com.protos.WeaponProto.Weapon weapon_;
     /**
-     * <code>required .com.protos.Weapon weapon = 1;</code>
+     * <code>optional .com.protos.Weapon weapon = 1;</code>
      */
     public boolean hasWeapon() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required .com.protos.Weapon weapon = 1;</code>
+     * <code>optional .com.protos.Weapon weapon = 1;</code>
      */
     public com.protos.WeaponProto.Weapon getWeapon() {
       return weapon_;
     }
     /**
-     * <code>required .com.protos.Weapon weapon = 1;</code>
+     * <code>optional .com.protos.Weapon weapon = 1;</code>
      */
     public com.protos.WeaponProto.WeaponOrBuilder getWeaponOrBuilder() {
       return weapon_;
@@ -194,13 +194,13 @@ public final class HeroProto {
     public static final int ARMOR_FIELD_NUMBER = 2;
     private int armor_;
     /**
-     * <code>required int32 armor = 2;</code>
+     * <code>optional int32 armor = 2;</code>
      */
     public boolean hasArmor() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required int32 armor = 2;</code>
+     * <code>optional int32 armor = 2;</code>
      */
     public int getArmor() {
       return armor_;
@@ -238,21 +238,15 @@ public final class HeroProto {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasWeapon()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasArmor()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       if (!hasMinion()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!getWeapon().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
+      if (hasWeapon()) {
+        if (!getWeapon().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
       }
       if (!getMinion().isInitialized()) {
         memoizedIsInitialized = 0;
@@ -506,21 +500,15 @@ public final class HeroProto {
       }
 
       public final boolean isInitialized() {
-        if (!hasWeapon()) {
-          
-          return false;
-        }
-        if (!hasArmor()) {
-          
-          return false;
-        }
         if (!hasMinion()) {
           
           return false;
         }
-        if (!getWeapon().isInitialized()) {
-          
-          return false;
+        if (hasWeapon()) {
+          if (!getWeapon().isInitialized()) {
+            
+            return false;
+          }
         }
         if (!getMinion().isInitialized()) {
           
@@ -552,13 +540,13 @@ public final class HeroProto {
       private com.google.protobuf.SingleFieldBuilder<
           com.protos.WeaponProto.Weapon, com.protos.WeaponProto.Weapon.Builder, com.protos.WeaponProto.WeaponOrBuilder> weaponBuilder_;
       /**
-       * <code>required .com.protos.Weapon weapon = 1;</code>
+       * <code>optional .com.protos.Weapon weapon = 1;</code>
        */
       public boolean hasWeapon() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required .com.protos.Weapon weapon = 1;</code>
+       * <code>optional .com.protos.Weapon weapon = 1;</code>
        */
       public com.protos.WeaponProto.Weapon getWeapon() {
         if (weaponBuilder_ == null) {
@@ -568,7 +556,7 @@ public final class HeroProto {
         }
       }
       /**
-       * <code>required .com.protos.Weapon weapon = 1;</code>
+       * <code>optional .com.protos.Weapon weapon = 1;</code>
        */
       public Builder setWeapon(com.protos.WeaponProto.Weapon value) {
         if (weaponBuilder_ == null) {
@@ -584,7 +572,7 @@ public final class HeroProto {
         return this;
       }
       /**
-       * <code>required .com.protos.Weapon weapon = 1;</code>
+       * <code>optional .com.protos.Weapon weapon = 1;</code>
        */
       public Builder setWeapon(
           com.protos.WeaponProto.Weapon.Builder builderForValue) {
@@ -598,7 +586,7 @@ public final class HeroProto {
         return this;
       }
       /**
-       * <code>required .com.protos.Weapon weapon = 1;</code>
+       * <code>optional .com.protos.Weapon weapon = 1;</code>
        */
       public Builder mergeWeapon(com.protos.WeaponProto.Weapon value) {
         if (weaponBuilder_ == null) {
@@ -617,7 +605,7 @@ public final class HeroProto {
         return this;
       }
       /**
-       * <code>required .com.protos.Weapon weapon = 1;</code>
+       * <code>optional .com.protos.Weapon weapon = 1;</code>
        */
       public Builder clearWeapon() {
         if (weaponBuilder_ == null) {
@@ -630,7 +618,7 @@ public final class HeroProto {
         return this;
       }
       /**
-       * <code>required .com.protos.Weapon weapon = 1;</code>
+       * <code>optional .com.protos.Weapon weapon = 1;</code>
        */
       public com.protos.WeaponProto.Weapon.Builder getWeaponBuilder() {
         bitField0_ |= 0x00000001;
@@ -638,7 +626,7 @@ public final class HeroProto {
         return getWeaponFieldBuilder().getBuilder();
       }
       /**
-       * <code>required .com.protos.Weapon weapon = 1;</code>
+       * <code>optional .com.protos.Weapon weapon = 1;</code>
        */
       public com.protos.WeaponProto.WeaponOrBuilder getWeaponOrBuilder() {
         if (weaponBuilder_ != null) {
@@ -648,7 +636,7 @@ public final class HeroProto {
         }
       }
       /**
-       * <code>required .com.protos.Weapon weapon = 1;</code>
+       * <code>optional .com.protos.Weapon weapon = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.protos.WeaponProto.Weapon, com.protos.WeaponProto.Weapon.Builder, com.protos.WeaponProto.WeaponOrBuilder> 
@@ -666,19 +654,19 @@ public final class HeroProto {
 
       private int armor_ ;
       /**
-       * <code>required int32 armor = 2;</code>
+       * <code>optional int32 armor = 2;</code>
        */
       public boolean hasArmor() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required int32 armor = 2;</code>
+       * <code>optional int32 armor = 2;</code>
        */
       public int getArmor() {
         return armor_;
       }
       /**
-       * <code>required int32 armor = 2;</code>
+       * <code>optional int32 armor = 2;</code>
        */
       public Builder setArmor(int value) {
         bitField0_ |= 0x00000002;
@@ -687,7 +675,7 @@ public final class HeroProto {
         return this;
       }
       /**
-       * <code>required int32 armor = 2;</code>
+       * <code>optional int32 armor = 2;</code>
        */
       public Builder clearArmor() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -838,8 +826,8 @@ public final class HeroProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\nhero.proto\022\ncom.protos\032\014weapon.proto\032\014" +
-      "minion.proto\"]\n\004Hero\022\"\n\006weapon\030\001 \002(\0132\022.c" +
-      "om.protos.Weapon\022\r\n\005armor\030\002 \002(\005\022\"\n\006minio" +
+      "minion.proto\"]\n\004Hero\022\"\n\006weapon\030\001 \001(\0132\022.c" +
+      "om.protos.Weapon\022\r\n\005armor\030\002 \001(\005\022\"\n\006minio" +
       "n\030\003 \002(\0132\022.com.protos.MinionB\027\n\ncom.proto" +
       "sB\tHeroProto"
     };

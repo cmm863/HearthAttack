@@ -130,11 +130,11 @@ public final class MinionProto {
     int getHealth();
 
     /**
-     * <code>required int32 max_health = 14;</code>
+     * <code>optional int32 max_health = 14;</code>
      */
     boolean hasMaxHealth();
     /**
-     * <code>required int32 max_health = 14;</code>
+     * <code>optional int32 max_health = 14;</code>
      */
     int getMaxHealth();
 
@@ -231,6 +231,42 @@ public final class MinionProto {
      * <code>required .com.protos.Card card = 24;</code>
      */
     com.protos.CardProto.CardOrBuilder getCardOrBuilder();
+
+    /**
+     * <code>required int32 turn_played = 25;</code>
+     */
+    boolean hasTurnPlayed();
+    /**
+     * <code>required int32 turn_played = 25;</code>
+     */
+    int getTurnPlayed();
+
+    /**
+     * <code>optional int32 damage = 26;</code>
+     */
+    boolean hasDamage();
+    /**
+     * <code>optional int32 damage = 26;</code>
+     */
+    int getDamage();
+
+    /**
+     * <code>optional bool deathrattle = 27;</code>
+     */
+    boolean hasDeathrattle();
+    /**
+     * <code>optional bool deathrattle = 27;</code>
+     */
+    boolean getDeathrattle();
+
+    /**
+     * <code>required int32 position = 28;</code>
+     */
+    boolean hasPosition();
+    /**
+     * <code>required int32 position = 28;</code>
+     */
+    int getPosition();
   }
   /**
    * Protobuf type {@code com.protos.Minion}
@@ -416,6 +452,26 @@ public final class MinionProto {
                 card_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00800000;
+              break;
+            }
+            case 200: {
+              bitField0_ |= 0x01000000;
+              turnPlayed_ = input.readInt32();
+              break;
+            }
+            case 208: {
+              bitField0_ |= 0x02000000;
+              damage_ = input.readInt32();
+              break;
+            }
+            case 216: {
+              bitField0_ |= 0x04000000;
+              deathrattle_ = input.readBool();
+              break;
+            }
+            case 224: {
+              bitField0_ |= 0x08000000;
+              position_ = input.readInt32();
               break;
             }
           }
@@ -792,13 +848,13 @@ public final class MinionProto {
     public static final int MAX_HEALTH_FIELD_NUMBER = 14;
     private int maxHealth_;
     /**
-     * <code>required int32 max_health = 14;</code>
+     * <code>optional int32 max_health = 14;</code>
      */
     public boolean hasMaxHealth() {
       return ((bitField0_ & 0x00002000) == 0x00002000);
     }
     /**
-     * <code>required int32 max_health = 14;</code>
+     * <code>optional int32 max_health = 14;</code>
      */
     public int getMaxHealth() {
       return maxHealth_;
@@ -960,6 +1016,66 @@ public final class MinionProto {
       return card_;
     }
 
+    public static final int TURN_PLAYED_FIELD_NUMBER = 25;
+    private int turnPlayed_;
+    /**
+     * <code>required int32 turn_played = 25;</code>
+     */
+    public boolean hasTurnPlayed() {
+      return ((bitField0_ & 0x01000000) == 0x01000000);
+    }
+    /**
+     * <code>required int32 turn_played = 25;</code>
+     */
+    public int getTurnPlayed() {
+      return turnPlayed_;
+    }
+
+    public static final int DAMAGE_FIELD_NUMBER = 26;
+    private int damage_;
+    /**
+     * <code>optional int32 damage = 26;</code>
+     */
+    public boolean hasDamage() {
+      return ((bitField0_ & 0x02000000) == 0x02000000);
+    }
+    /**
+     * <code>optional int32 damage = 26;</code>
+     */
+    public int getDamage() {
+      return damage_;
+    }
+
+    public static final int DEATHRATTLE_FIELD_NUMBER = 27;
+    private boolean deathrattle_;
+    /**
+     * <code>optional bool deathrattle = 27;</code>
+     */
+    public boolean hasDeathrattle() {
+      return ((bitField0_ & 0x04000000) == 0x04000000);
+    }
+    /**
+     * <code>optional bool deathrattle = 27;</code>
+     */
+    public boolean getDeathrattle() {
+      return deathrattle_;
+    }
+
+    public static final int POSITION_FIELD_NUMBER = 28;
+    private int position_;
+    /**
+     * <code>required int32 position = 28;</code>
+     */
+    public boolean hasPosition() {
+      return ((bitField0_ & 0x08000000) == 0x08000000);
+    }
+    /**
+     * <code>required int32 position = 28;</code>
+     */
+    public int getPosition() {
+      return position_;
+    }
+
     private void initFields() {
       taunt_ = false;
       divineShield_ = false;
@@ -985,6 +1101,10 @@ public final class MinionProto {
       cantAttack_ = false;
       tribe_ = com.protos.MinionProto.Minion.Tribe.NONE;
       card_ = com.protos.CardProto.Card.getDefaultInstance();
+      turnPlayed_ = 0;
+      damage_ = 0;
+      deathrattle_ = false;
+      position_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -992,11 +1112,15 @@ public final class MinionProto {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasMaxHealth()) {
+      if (!hasCard()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasCard()) {
+      if (!hasTurnPlayed()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasPosition()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -1082,6 +1206,18 @@ public final class MinionProto {
       }
       if (((bitField0_ & 0x00800000) == 0x00800000)) {
         output.writeMessage(24, card_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        output.writeInt32(25, turnPlayed_);
+      }
+      if (((bitField0_ & 0x02000000) == 0x02000000)) {
+        output.writeInt32(26, damage_);
+      }
+      if (((bitField0_ & 0x04000000) == 0x04000000)) {
+        output.writeBool(27, deathrattle_);
+      }
+      if (((bitField0_ & 0x08000000) == 0x08000000)) {
+        output.writeInt32(28, position_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1187,6 +1323,22 @@ public final class MinionProto {
       if (((bitField0_ & 0x00800000) == 0x00800000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(24, card_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(25, turnPlayed_);
+      }
+      if (((bitField0_ & 0x02000000) == 0x02000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(26, damage_);
+      }
+      if (((bitField0_ & 0x04000000) == 0x04000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(27, deathrattle_);
+      }
+      if (((bitField0_ & 0x08000000) == 0x08000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(28, position_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1358,6 +1510,14 @@ public final class MinionProto {
           cardBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00800000);
+        turnPlayed_ = 0;
+        bitField0_ = (bitField0_ & ~0x01000000);
+        damage_ = 0;
+        bitField0_ = (bitField0_ & ~0x02000000);
+        deathrattle_ = false;
+        bitField0_ = (bitField0_ & ~0x04000000);
+        position_ = 0;
+        bitField0_ = (bitField0_ & ~0x08000000);
         return this;
       }
 
@@ -1486,6 +1646,22 @@ public final class MinionProto {
         } else {
           result.card_ = cardBuilder_.build();
         }
+        if (((from_bitField0_ & 0x01000000) == 0x01000000)) {
+          to_bitField0_ |= 0x01000000;
+        }
+        result.turnPlayed_ = turnPlayed_;
+        if (((from_bitField0_ & 0x02000000) == 0x02000000)) {
+          to_bitField0_ |= 0x02000000;
+        }
+        result.damage_ = damage_;
+        if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
+          to_bitField0_ |= 0x04000000;
+        }
+        result.deathrattle_ = deathrattle_;
+        if (((from_bitField0_ & 0x08000000) == 0x08000000)) {
+          to_bitField0_ |= 0x08000000;
+        }
+        result.position_ = position_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1574,16 +1750,32 @@ public final class MinionProto {
         if (other.hasCard()) {
           mergeCard(other.getCard());
         }
+        if (other.hasTurnPlayed()) {
+          setTurnPlayed(other.getTurnPlayed());
+        }
+        if (other.hasDamage()) {
+          setDamage(other.getDamage());
+        }
+        if (other.hasDeathrattle()) {
+          setDeathrattle(other.getDeathrattle());
+        }
+        if (other.hasPosition()) {
+          setPosition(other.getPosition());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasMaxHealth()) {
+        if (!hasCard()) {
           
           return false;
         }
-        if (!hasCard()) {
+        if (!hasTurnPlayed()) {
+          
+          return false;
+        }
+        if (!hasPosition()) {
           
           return false;
         }
@@ -2031,19 +2223,19 @@ public final class MinionProto {
 
       private int maxHealth_ ;
       /**
-       * <code>required int32 max_health = 14;</code>
+       * <code>optional int32 max_health = 14;</code>
        */
       public boolean hasMaxHealth() {
         return ((bitField0_ & 0x00002000) == 0x00002000);
       }
       /**
-       * <code>required int32 max_health = 14;</code>
+       * <code>optional int32 max_health = 14;</code>
        */
       public int getMaxHealth() {
         return maxHealth_;
       }
       /**
-       * <code>required int32 max_health = 14;</code>
+       * <code>optional int32 max_health = 14;</code>
        */
       public Builder setMaxHealth(int value) {
         bitField0_ |= 0x00002000;
@@ -2052,7 +2244,7 @@ public final class MinionProto {
         return this;
       }
       /**
-       * <code>required int32 max_health = 14;</code>
+       * <code>optional int32 max_health = 14;</code>
        */
       public Builder clearMaxHealth() {
         bitField0_ = (bitField0_ & ~0x00002000);
@@ -2468,6 +2660,134 @@ public final class MinionProto {
         return cardBuilder_;
       }
 
+      private int turnPlayed_ ;
+      /**
+       * <code>required int32 turn_played = 25;</code>
+       */
+      public boolean hasTurnPlayed() {
+        return ((bitField0_ & 0x01000000) == 0x01000000);
+      }
+      /**
+       * <code>required int32 turn_played = 25;</code>
+       */
+      public int getTurnPlayed() {
+        return turnPlayed_;
+      }
+      /**
+       * <code>required int32 turn_played = 25;</code>
+       */
+      public Builder setTurnPlayed(int value) {
+        bitField0_ |= 0x01000000;
+        turnPlayed_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 turn_played = 25;</code>
+       */
+      public Builder clearTurnPlayed() {
+        bitField0_ = (bitField0_ & ~0x01000000);
+        turnPlayed_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int damage_ ;
+      /**
+       * <code>optional int32 damage = 26;</code>
+       */
+      public boolean hasDamage() {
+        return ((bitField0_ & 0x02000000) == 0x02000000);
+      }
+      /**
+       * <code>optional int32 damage = 26;</code>
+       */
+      public int getDamage() {
+        return damage_;
+      }
+      /**
+       * <code>optional int32 damage = 26;</code>
+       */
+      public Builder setDamage(int value) {
+        bitField0_ |= 0x02000000;
+        damage_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 damage = 26;</code>
+       */
+      public Builder clearDamage() {
+        bitField0_ = (bitField0_ & ~0x02000000);
+        damage_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean deathrattle_ ;
+      /**
+       * <code>optional bool deathrattle = 27;</code>
+       */
+      public boolean hasDeathrattle() {
+        return ((bitField0_ & 0x04000000) == 0x04000000);
+      }
+      /**
+       * <code>optional bool deathrattle = 27;</code>
+       */
+      public boolean getDeathrattle() {
+        return deathrattle_;
+      }
+      /**
+       * <code>optional bool deathrattle = 27;</code>
+       */
+      public Builder setDeathrattle(boolean value) {
+        bitField0_ |= 0x04000000;
+        deathrattle_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool deathrattle = 27;</code>
+       */
+      public Builder clearDeathrattle() {
+        bitField0_ = (bitField0_ & ~0x04000000);
+        deathrattle_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int position_ ;
+      /**
+       * <code>required int32 position = 28;</code>
+       */
+      public boolean hasPosition() {
+        return ((bitField0_ & 0x08000000) == 0x08000000);
+      }
+      /**
+       * <code>required int32 position = 28;</code>
+       */
+      public int getPosition() {
+        return position_;
+      }
+      /**
+       * <code>required int32 position = 28;</code>
+       */
+      public Builder setPosition(int value) {
+        bitField0_ |= 0x08000000;
+        position_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 position = 28;</code>
+       */
+      public Builder clearPosition() {
+        bitField0_ = (bitField0_ & ~0x08000000);
+        position_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.protos.Minion)
     }
 
@@ -2493,7 +2813,7 @@ public final class MinionProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014minion.proto\022\ncom.protos\032\ncard.proto\"\252" +
+      "\n\014minion.proto\022\ncom.protos\032\ncard.proto\"\366" +
       "\005\n\006Minion\022\r\n\005taunt\030\001 \001(\010\022\025\n\rdivine_shiel" +
       "d\030\002 \001(\010\022\020\n\010windfury\030\003 \001(\010\022\016\n\006charge\030\004 \001(" +
       "\010\022\016\n\006immune\030\005 \001(\010\022\024\n\014has_attacked\030\006 \001(\010\022" +
@@ -2501,17 +2821,19 @@ public final class MinionProto {
       "\030\010 \001(\010\022\020\n\010silenced\030\t \001(\010\022 \n\030stealthed_un" +
       "til_revealed\030\n \001(\010\022!\n\031stealthed_until_ne" +
       "xt_turn\030\013 \001(\010\022\027\n\017hero_targetable\030\014 \001(\010\022\016" +
-      "\n\006health\030\r \001(\005\022\022\n\nmax_health\030\016 \002(\005\022\023\n\013au" +
+      "\n\006health\030\r \001(\005\022\022\n\nmax_health\030\016 \001(\005\022\023\n\013au" +
       "ra_health\030\017 \001(\005\022\016\n\006attack\030\020 \001(\005\022#\n\033extra",
       "_attack_until_turn_end\030\021 \001(\005\022\023\n\013aura_att" +
       "ack\030\022 \001(\005\022\035\n\025destroy_on_turn_start\030\023 \001(\010" +
       "\022\033\n\023destroy_on_turn_end\030\024 \001(\010\022\024\n\014spell_d" +
       "amage\030\025 \001(\005\022\023\n\013cant_attack\030\026 \001(\010\022\'\n\005trib" +
       "e\030\027 \001(\0162\030.com.protos.Minion.Tribe\022\036\n\004car" +
-      "d\030\030 \002(\0132\020.com.protos.Card\"`\n\005Tribe\022\010\n\004NO" +
-      "NE\020\000\022\t\n\005BEAST\020\001\022\010\n\004MECH\020\002\022\n\n\006MURLOC\020\003\022\n\n" +
-      "\006PIRATE\020\004\022\t\n\005DEMON\020\005\022\n\n\006DRAGON\020\006\022\t\n\005TOTE" +
-      "M\020\007B\031\n\ncom.protosB\013MinionProto"
+      "d\030\030 \002(\0132\020.com.protos.Card\022\023\n\013turn_played" +
+      "\030\031 \002(\005\022\016\n\006damage\030\032 \001(\005\022\023\n\013deathrattle\030\033 " +
+      "\001(\010\022\020\n\010position\030\034 \002(\005\"`\n\005Tribe\022\010\n\004NONE\020\000" +
+      "\022\t\n\005BEAST\020\001\022\010\n\004MECH\020\002\022\n\n\006MURLOC\020\003\022\n\n\006PIR" +
+      "ATE\020\004\022\t\n\005DEMON\020\005\022\n\n\006DRAGON\020\006\022\t\n\005TOTEM\020\007B",
+      "\031\n\ncom.protosB\013MinionProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2531,7 +2853,7 @@ public final class MinionProto {
     internal_static_com_protos_Minion_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_protos_Minion_descriptor,
-        new java.lang.String[] { "Taunt", "DivineShield", "Windfury", "Charge", "Immune", "HasAttacked", "HasWindfuryAttacked", "Frozen", "Silenced", "StealthedUntilRevealed", "StealthedUntilNextTurn", "HeroTargetable", "Health", "MaxHealth", "AuraHealth", "Attack", "ExtraAttackUntilTurnEnd", "AuraAttack", "DestroyOnTurnStart", "DestroyOnTurnEnd", "SpellDamage", "CantAttack", "Tribe", "Card", });
+        new java.lang.String[] { "Taunt", "DivineShield", "Windfury", "Charge", "Immune", "HasAttacked", "HasWindfuryAttacked", "Frozen", "Silenced", "StealthedUntilRevealed", "StealthedUntilNextTurn", "HeroTargetable", "Health", "MaxHealth", "AuraHealth", "Attack", "ExtraAttackUntilTurnEnd", "AuraAttack", "DestroyOnTurnStart", "DestroyOnTurnEnd", "SpellDamage", "CantAttack", "Tribe", "Card", "TurnPlayed", "Damage", "Deathrattle", "Position", });
     com.protos.CardProto.getDescriptor();
   }
 

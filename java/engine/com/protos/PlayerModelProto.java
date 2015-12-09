@@ -162,6 +162,33 @@ public final class PlayerModelProto {
      * <code>optional int32 num_cards_used = 12;</code>
      */
     int getNumCardsUsed();
+
+    /**
+     * <code>optional int32 turn_number = 13;</code>
+     */
+    boolean hasTurnNumber();
+    /**
+     * <code>optional int32 turn_number = 13;</code>
+     */
+    int getTurnNumber();
+
+    /**
+     * <code>optional bool current_player = 14;</code>
+     */
+    boolean hasCurrentPlayer();
+    /**
+     * <code>optional bool current_player = 14;</code>
+     */
+    boolean getCurrentPlayer();
+
+    /**
+     * <code>optional bool submit = 15;</code>
+     */
+    boolean hasSubmit();
+    /**
+     * <code>optional bool submit = 15;</code>
+     */
+    boolean getSubmit();
   }
   /**
    * Protobuf type {@code com.protos.PlayerModel}
@@ -296,6 +323,21 @@ public final class PlayerModelProto {
             case 96: {
               bitField0_ |= 0x00000200;
               numCardsUsed_ = input.readInt32();
+              break;
+            }
+            case 104: {
+              bitField0_ |= 0x00000400;
+              turnNumber_ = input.readInt32();
+              break;
+            }
+            case 112: {
+              bitField0_ |= 0x00000800;
+              currentPlayer_ = input.readBool();
+              break;
+            }
+            case 120: {
+              bitField0_ |= 0x00001000;
+              submit_ = input.readBool();
               break;
             }
           }
@@ -603,6 +645,51 @@ public final class PlayerModelProto {
       return numCardsUsed_;
     }
 
+    public static final int TURN_NUMBER_FIELD_NUMBER = 13;
+    private int turnNumber_;
+    /**
+     * <code>optional int32 turn_number = 13;</code>
+     */
+    public boolean hasTurnNumber() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional int32 turn_number = 13;</code>
+     */
+    public int getTurnNumber() {
+      return turnNumber_;
+    }
+
+    public static final int CURRENT_PLAYER_FIELD_NUMBER = 14;
+    private boolean currentPlayer_;
+    /**
+     * <code>optional bool current_player = 14;</code>
+     */
+    public boolean hasCurrentPlayer() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional bool current_player = 14;</code>
+     */
+    public boolean getCurrentPlayer() {
+      return currentPlayer_;
+    }
+
+    public static final int SUBMIT_FIELD_NUMBER = 15;
+    private boolean submit_;
+    /**
+     * <code>optional bool submit = 15;</code>
+     */
+    public boolean hasSubmit() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>optional bool submit = 15;</code>
+     */
+    public boolean getSubmit() {
+      return submit_;
+    }
+
     private void initFields() {
       name_ = "";
       playerId_ = 0;
@@ -616,6 +703,9 @@ public final class PlayerModelProto {
       hand_ = java.util.Collections.emptyList();
       overload_ = 0;
       numCardsUsed_ = 0;
+      turnNumber_ = 0;
+      currentPlayer_ = false;
+      submit_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -706,6 +796,15 @@ public final class PlayerModelProto {
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         output.writeInt32(12, numCardsUsed_);
       }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeInt32(13, turnNumber_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeBool(14, currentPlayer_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        output.writeBool(15, submit_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -762,6 +861,18 @@ public final class PlayerModelProto {
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(12, numCardsUsed_);
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(13, turnNumber_);
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(14, currentPlayer_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(15, submit_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -924,6 +1035,12 @@ public final class PlayerModelProto {
         bitField0_ = (bitField0_ & ~0x00000400);
         numCardsUsed_ = 0;
         bitField0_ = (bitField0_ & ~0x00000800);
+        turnNumber_ = 0;
+        bitField0_ = (bitField0_ & ~0x00001000);
+        currentPlayer_ = false;
+        bitField0_ = (bitField0_ & ~0x00002000);
+        submit_ = false;
+        bitField0_ = (bitField0_ & ~0x00004000);
         return this;
       }
 
@@ -1018,6 +1135,18 @@ public final class PlayerModelProto {
           to_bitField0_ |= 0x00000200;
         }
         result.numCardsUsed_ = numCardsUsed_;
+        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.turnNumber_ = turnNumber_;
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.currentPlayer_ = currentPlayer_;
+        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.submit_ = submit_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1117,6 +1246,15 @@ public final class PlayerModelProto {
         }
         if (other.hasNumCardsUsed()) {
           setNumCardsUsed(other.getNumCardsUsed());
+        }
+        if (other.hasTurnNumber()) {
+          setTurnNumber(other.getTurnNumber());
+        }
+        if (other.hasCurrentPlayer()) {
+          setCurrentPlayer(other.getCurrentPlayer());
+        }
+        if (other.hasSubmit()) {
+          setSubmit(other.getSubmit());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2197,6 +2335,102 @@ public final class PlayerModelProto {
         return this;
       }
 
+      private int turnNumber_ ;
+      /**
+       * <code>optional int32 turn_number = 13;</code>
+       */
+      public boolean hasTurnNumber() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional int32 turn_number = 13;</code>
+       */
+      public int getTurnNumber() {
+        return turnNumber_;
+      }
+      /**
+       * <code>optional int32 turn_number = 13;</code>
+       */
+      public Builder setTurnNumber(int value) {
+        bitField0_ |= 0x00001000;
+        turnNumber_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 turn_number = 13;</code>
+       */
+      public Builder clearTurnNumber() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        turnNumber_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean currentPlayer_ ;
+      /**
+       * <code>optional bool current_player = 14;</code>
+       */
+      public boolean hasCurrentPlayer() {
+        return ((bitField0_ & 0x00002000) == 0x00002000);
+      }
+      /**
+       * <code>optional bool current_player = 14;</code>
+       */
+      public boolean getCurrentPlayer() {
+        return currentPlayer_;
+      }
+      /**
+       * <code>optional bool current_player = 14;</code>
+       */
+      public Builder setCurrentPlayer(boolean value) {
+        bitField0_ |= 0x00002000;
+        currentPlayer_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool current_player = 14;</code>
+       */
+      public Builder clearCurrentPlayer() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        currentPlayer_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean submit_ ;
+      /**
+       * <code>optional bool submit = 15;</code>
+       */
+      public boolean hasSubmit() {
+        return ((bitField0_ & 0x00004000) == 0x00004000);
+      }
+      /**
+       * <code>optional bool submit = 15;</code>
+       */
+      public boolean getSubmit() {
+        return submit_;
+      }
+      /**
+       * <code>optional bool submit = 15;</code>
+       */
+      public Builder setSubmit(boolean value) {
+        bitField0_ |= 0x00004000;
+        submit_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool submit = 15;</code>
+       */
+      public Builder clearSubmit() {
+        bitField0_ = (bitField0_ & ~0x00004000);
+        submit_ = false;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.protos.PlayerModel)
     }
 
@@ -2224,15 +2458,16 @@ public final class PlayerModelProto {
     java.lang.String[] descriptorData = {
       "\n\022player_model.proto\022\ncom.protos\032\ndeck.p" +
       "roto\032\nhero.proto\032\014minion.proto\032\ncard.pro" +
-      "to\"\247\002\n\013PlayerModel\022\014\n\004name\030\001 \002(\t\022\021\n\tplay" +
+      "to\"\344\002\n\013PlayerModel\022\014\n\004name\030\001 \002(\t\022\021\n\tplay" +
       "er_id\030\002 \002(\005\022\036\n\004hero\030\003 \002(\0132\020.com.protos.H" +
       "ero\022\036\n\004deck\030\004 \002(\0132\020.com.protos.Deck\022\014\n\004m" +
       "ana\030\005 \001(\005\022\020\n\010max_mana\030\006 \002(\005\022\020\n\010deck_pos\030" +
       "\007 \001(\005\022\026\n\016fatigue_damage\030\010 \001(\005\022#\n\007minions" +
       "\030\t \003(\0132\022.com.protos.Minion\022\036\n\004hand\030\n \003(\013" +
       "2\020.com.protos.Card\022\020\n\010overload\030\013 \001(\005\022\026\n\016" +
-      "num_cards_used\030\014 \001(\005B\036\n\ncom.protosB\020Play",
-      "erModelProto"
+      "num_cards_used\030\014 \001(\005\022\023\n\013turn_number\030\r \001(",
+      "\005\022\026\n\016current_player\030\016 \001(\010\022\016\n\006submit\030\017 \001(" +
+      "\010B\036\n\ncom.protosB\020PlayerModelProto"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2255,7 +2490,7 @@ public final class PlayerModelProto {
     internal_static_com_protos_PlayerModel_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_protos_PlayerModel_descriptor,
-        new java.lang.String[] { "Name", "PlayerId", "Hero", "Deck", "Mana", "MaxMana", "DeckPos", "FatigueDamage", "Minions", "Hand", "Overload", "NumCardsUsed", });
+        new java.lang.String[] { "Name", "PlayerId", "Hero", "Deck", "Mana", "MaxMana", "DeckPos", "FatigueDamage", "Minions", "Hand", "Overload", "NumCardsUsed", "TurnNumber", "CurrentPlayer", "Submit", });
     com.protos.DeckProto.getDescriptor();
     com.protos.HeroProto.getDescriptor();
     com.protos.MinionProto.getDescriptor();
