@@ -49,6 +49,7 @@ public class Reader implements Runnable {
         BoardModelProto.BoardModel boardModel = BoardModelProto.BoardModel.parseFrom(message);
         playerModel = boardModel.getPlayer();
         opponentModel = boardModel.getOpponent();
+        System.out.println(playerModel);
         write.lock();
         update.set(true);
         write.unlock();

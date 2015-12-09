@@ -1,5 +1,5 @@
 __author__ = 'connor'
-from protos import deck_pb2, hero_pb2, card_pb2, player_model_pb2, weapon_pb2, minion_pb2, update_pb2
+from protos import deck_pb2, hero_pb2, card_pb2, player_model_pb2, weapon_pb2, minion_pb2, update_pb2, board_model_pb2
 import json
 from helpers import *
 import socket
@@ -42,16 +42,15 @@ def update_board(l, home_m, enemy_m):
             home_m.hand.extend([card])
             home_m.deck.cards.remove(card)
             if home_m.submit:
-                '''
                 s = socket.socket()
-                port = 3333
+                port = 3332
                 s.connect(('127.0.0.1', port))
-                s.send(home_m.SerializeToString())
+                bm = board_model_pb2.BoardModel()
+                bm.player.CopyFrom(home_m)
+                bm.opponent.CopyFrom(enemy_m)
+                s.send(bm.SerializeToString())
                 print s.recv(1024)
                 s.close()
-                '''
-                f = open("thisfile.dat", 'w')
-                f.write(home_m.__str__())
                 home_m.submit = False
 
         elif l[1] == "OPPOSING HAND":
@@ -68,6 +67,7 @@ def update_board(l, home_m, enemy_m):
             minion.health = 30
             minion.max_health = 30
             minion.damage = 0
+            minion.turn_played = 0
             hero.minion.CopyFrom(minion)
             home_m.hero.CopyFrom(hero)
         elif l[1] == "FRIENDLY PLAY (Hero Power)":
@@ -84,6 +84,7 @@ def update_board(l, home_m, enemy_m):
             minion.health = 30
             minion.max_health = 30
             minion.damage = 0
+            minion.turn_played = 0
             hero.minion.CopyFrom(minion)
             enemy_m.hero.CopyFrom(hero)
         elif l[1] == "OPPOSING PLAY (Hero Power)":
