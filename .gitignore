@@ -6,11 +6,12 @@ protos/__pycache__/
 *.pyc
 *.class
 my/*
+java/classpath/*
 java/HearthSim/build/
 protos/*.java
 protos/*.pb.cc
 protos/*.pb.h
-java/classpath/
+java/classpath/*
 protos/com/protos/*.java
 *.jar
 *.log
