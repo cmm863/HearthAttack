@@ -37,14 +37,10 @@ public class Reader implements Runnable {
       Socket clientSocket = serverSocket.accept();
       BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
       String input,message;
-      while(!terminate.get()){
+      while(!terminate.get()) {
         message = "";
         System.out.println("Waiting for message");
-        input = in.readLine();
-        while(input.size() > 0){
-          message += input;
-          input = in.readLine();
-        }
+        message = in.readLine();
         System.out.println("Received a message");
         BoardModelProto.BoardModel boardModel = BoardModelProto.BoardModel.parseFrom(message.getBytes());
         playerModel = boardModel.getPlayer();

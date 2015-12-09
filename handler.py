@@ -42,12 +42,16 @@ def update_board(l, home_m, enemy_m):
             home_m.hand.extend([card])
             home_m.deck.cards.remove(card)
             if home_m.submit:
+                '''
                 s = socket.socket()
                 port = 3333
                 s.connect(('127.0.0.1', port))
                 s.send(home_m.SerializeToString())
                 print s.recv(1024)
                 s.close()
+                '''
+                f = open("thisfile.dat", 'w')
+                f.write(home_m.__str__())
                 home_m.submit = False
 
         elif l[1] == "OPPOSING HAND":
@@ -192,10 +196,12 @@ def update_board(l, home_m, enemy_m):
             enemy_m.turn_number = int(l[2])
             home_m.turn_number = int(l[2])
         elif l[1] == "RESOURCES":
-            if l[3] == "MiRaGe":
+            if l[3] == home_m.name:
                 home_m.mana = int(l[2])
+                home_m.max_mana = home_m.mana
             else:
                 enemy_m.mana = int(l[2])
+                enemy_m.max_mana = enemy_m.mana
         elif l[1] == "DAMAGE":
             print("Damage: " + l[2] + " on " + l[3])
             if home_m.player_id == int(parse_player_id(l[3])):
