@@ -19,6 +19,13 @@
 
 using namespace std;
 
+const float CREEPER_VAL = 3;
+const float JUGGLER_VAL = 1.25;
+const float PILOT_SHREDDER_VAL 3.6;
+const float BELCHER_VAL = 2;
+const float MINIBOT_VAL = 0.5;
+
+
 void error(const char *msg)
 {
     perror(msg);
@@ -54,22 +61,80 @@ float valCalc(const com::protos::Minion& aMinion)
 float zombie_chow_val(const com::protos::Minion& aMinion, const com::protos::Board& aBoard)
 {
   float val = 0;
+  com::protos::Hero waitHero = aBoard.waitingplayer().hero();
+  com::protos::Hero currHero = aBoard.currentplayer().hero();
   
-  if(aBoard.waitingplayer().hero().armor() < 20)
-    aBoard.waitingplayer().hero().armor() / 5.0 - 5;
+  if((waitHero.armor() + waitHero.minion().health() < 20)
+    (waitHero.armor() + waitHero.minion().health()) / 5.0 - 5;
   
   return val;
+}
+
+float gurubashi_val(const com::protos::Minion& aMinion)
+{
+  float val = 0;
+    
+  if(!aMinion.silenced())
+    val = aMinion.health() * .33;
+     
+  
+  return val; 
+}
+
+float swordsmith_val(const com::protos::Board& aBoard)
+{
+  float val = 0;
+  bool cardonboard = false;
+  
+  for(int i = 0; i < aBoard.currentplayer().minions_size(); i++)
+  {
+    cardonboard = true;
+    if(i > 0)
+      val += .25;
+  }
+  
+  val += cardonboard;
+  
+  return val;
+}
+
+float arc_golem_val(const com::protos::Board& aBoard)
+{
+  float val = 0;
+    
+  val -= (aBoard.waitingplayer().max_mana() - 9) / 2;
+  
+ return val; 
 }
 
 
 float value_of(const com::protos::Minion& aMinion, const com::protos::Board& aBoard)
 {
   float theScore = 0;
+  string theName = aMinion.card().name();
+  
   
   theScore += valCalc(aMinion);
   
-  if(aMinion.card().name() == "Zombie Chow")
+  if(theName == "Zombie Chow")
     theScore += zombie_chow_val(aMinion, aBoard);
+  else if(theName == "Haunted Creeper")
+    theScore += CREEPER_VAL;
+  else if(theName == "Knife Juggler")
+    theScore += JUGGLER_VAL;
+  else if(theName == "Master Swordsmith")
+    theScore += swordsmith_val(aBoard);
+  else if(theName == "Arcane Golem")
+    theScore += arc_golem_val(aBoard);
+  else if(theName == "Piloted Shredder")
+    theScore += PILOT_SHREDDER_VAL;
+  else if(theName == "Gurubashi Berserker")
+    theScore += gurubashi_val(aMinion);
+  else if(theName == "Shielded Minibot")
+    theScore += MINIBOT_VAL;
+  else if(theName == "Sludge Belcher")
+    theScore += BELCHER_VAL;
+  
   
   return theScore;
 }
@@ -96,7 +161,6 @@ void printMove(const com::protos::Action& theAction, const com::protos::Board& t
   com::protos::PlayerModel playerOne = theBoard.currentplayer();
   com::protos::PlayerModel playerTwo = theBoard.waitingplayer();
   com::protos::Card theCard; 
-
   theCard = theAction.card(); 
    
   if(verb == 1)
