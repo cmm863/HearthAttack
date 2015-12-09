@@ -43,7 +43,7 @@ public class Reader implements Runnable {
         input = in.readLine();
         while(input.size() > 0){
           message += input;
-          input = in.readLine()
+          input = in.readLine();
         }
         System.out.println("Received a message");
         BoardModelProto.BoardModel boardModel = BoardModelProto.BoardModel.parseFrom(message.getBytes());
