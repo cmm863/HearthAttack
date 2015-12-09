@@ -164,9 +164,7 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
         except:
             continue
         player_model, enemy_model = update_board(l, player_model, enemy_model)
-        print"Turn number : %s" % {player_model.turn_number}
-        showBoard(player_model)
-        showBoard(enemy_model)
+
 
     else: #line contains no valid message for updater
         pass

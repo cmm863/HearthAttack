@@ -26,8 +26,17 @@ def update_board(l, home_m, enemy_m):
         # l[3] = NAME
         if l[1] == "FRIENDLY HAND":
             # Draw Card
-            print("Drew: " + l[3])
             card = get_card_from_deck(home_m, l[3])
+            with open("AllSets.json") as json_file:
+                data = json.load(json_file)
+            cost = 0
+            for expansion in expansion_sets:
+                for card_json in data[expansion]:
+                    try:
+                        if card_json["name"] == card.name:
+                            cost = card_json["cost"]
+                    except:
+                        pass
             if card is None:
                 if len(l[3]) > 0:
                     card = card_pb2.Card()
@@ -35,22 +44,52 @@ def update_board(l, home_m, enemy_m):
                     card.in_hand = False
                     card.name = l[3]
                     card.id = int(l[2])
+                    card.mana = cost
                     home_m.hand.extend([card])
                 return home_m, enemy_m
             card.in_hand = True
             card.id = int(l[2])
+            card.mana = cost
             home_m.hand.extend([card])
             home_m.deck.cards.remove(card)
             if home_m.submit:
-                s = socket.socket()
-                port = 3332
-                s.connect(('127.0.0.1', port))
-                bm = board_model_pb2.BoardModel()
-                bm.player.CopyFrom(home_m)
-                bm.opponent.CopyFrom(enemy_m)
-                s.send(bm.SerializeToString())
-                print s.recv(1024)
-                s.close()
+                print("----- Suggestions -----")
+                print("\n")
+                while home_m.mana > 0:
+                    for card in home_m.hand:
+                        if card.mana == home_m.mana:
+                            print("Play " + card.name)
+                            home_m.mana = home_m.mana - card.mana
+                            break
+                    home_m.mana = home_m.mana - 1
+                target = None
+                for minion in enemy_m.minions:
+                    try:
+                        if minion.taunt is True:
+                            target = minion
+                    except:
+                        pass
+                    
+                for minion in home_m.minions:
+                    try:
+                        if minion.divine_shield and target is not None:
+                            print(minion.card.name + " Attack " + target.card.name)
+                        else:
+                            print(minion.card.name + " Attack " + enemy_m.hero.minion.card.name)
+                    except:
+                        print(minion.card.name + " Attack " + enemy_m.hero.minion.card.name)
+                try:
+                    if home_m.hero.weapon.name == "Light\'s Justice" or home_m.hero.weapon.name == "Coghammer":
+                        done = False
+                        for minion in enemy_m.minions:
+                            if minion.health < home_m.hero.weapon.attack:
+                                print(home_m.hero.weapon.name + " Attack " + minion.card.name)
+                                done = True
+                                break
+                        if not done:
+                            print(home_m.hero.weapon.name + " Attack " + enemy_m.hero.minion.card.name)
+                except:
+                    pass
                 home_m.submit = False
 
         elif l[1] == "OPPOSING HAND":
@@ -92,7 +131,6 @@ def update_board(l, home_m, enemy_m):
             pass
         elif l[1] == "FRIENDLY DECK":
             # Returned card to deck
-            print("Mulliganed: " + l[3])
             card = get_card_from_hand(home_m, l[2])
             if card is None:
                 return home_m, enemy_m
@@ -112,7 +150,6 @@ def update_board(l, home_m, enemy_m):
                     minion = return_minion(card)
                     home_m.minions.extend([minion])
                 return home_m, enemy_m
-            print("Summoned: " + l[3])
             card.in_hand = False
             home_m.hand.remove(card)
             minion = return_minion(card)
@@ -121,7 +158,6 @@ def update_board(l, home_m, enemy_m):
             #output_minions(home_m)
         elif l[1] == "OPPOSING PLAY":
             # Opp Minion
-            print("Enemy Summoned: " + l[3])
             card = card_pb2.Card()
             card.has_been_used = False
             card.in_hand = False
@@ -133,7 +169,10 @@ def update_board(l, home_m, enemy_m):
             #output_minions(enemy_m)
         elif l[1] == "FRIENDLY SECRET":
             # Secret on your side
-            print(l[3])
+            try:
+                home_m.hand.remove(get_card_from_hand(home_m, int(l[2])))
+            except:
+                pass
             pass
         elif l[1] == "OPPOSING SECRET":
             # Secret on their side
@@ -141,7 +180,6 @@ def update_board(l, home_m, enemy_m):
         elif l[1] == "FRIENDLY GRAVEYARD":
             # Card is gone
             minion = None
-            print(l[3] + " died")
             for m in home_m.minions:
                 if m.card.id == int(l[2]):
                     minion = m
@@ -153,6 +191,11 @@ def update_board(l, home_m, enemy_m):
                     if c.id == int(l[2]):
                         home_m.hand.remove(c)
                         break
+            try:
+                if l[3] == home_m.hero.weapon.name:
+                    home_m.hero.weapon = None
+            except:
+                pass
             #output_minions(home_m)
         elif l[1] == "OPPOSING GRAVEYARD":
             # Opp card is gone
@@ -163,13 +206,20 @@ def update_board(l, home_m, enemy_m):
                     break
             if minion is not None:
                 enemy_m.minions.remove(minion)
-                print(l[3] + " died")
                 #output_minions(enemy_m)
         elif l[1] == "FRIENDLY PLAY (Weapon)":
             # Added weapon to your side
-            print(return_weapon(l[3]))
+            weapon = weapon_pb2.Weapon()
+            weapon.name = l[3]
+            if weapon.name == "Light\'s Justice":
+                weapon.attack = 1
+                weapon.durability = 4
+            elif weapon.name == "Coghammer":
+                home_m.hand.remove(get_card_from_hand(home_m, int(l[2])))
+                weapon.attack = 2
+                weapon.durability = 3
+            home_m.hero.weapon.CopyFrom(weapon)
 
-            pass
         elif l[1] == "OPPOSING PLAY (Weapon)":
             # Added weapon to opp side
             pass
@@ -184,12 +234,12 @@ def update_board(l, home_m, enemy_m):
         ## Occasionally there is no value but only at the beginning
         if l[1] == "PLAYER_ID":
             # Lets us know player ID and name of player Entity
-            if "MiRaGe" in l[3]:
-                home_m.player_id = int(l[2])
-                home_m.name = l[3]
-            else:
+            if "The Innkeeper" in l[3]:
                 enemy_m.player_id = int(l[2])
                 enemy_m.name = l[3]
+            else:
+                home_m.player_id = int(l[2])
+                home_m.name = l[3]
             pass
         elif l[1] == "TURN":
             # value = turn number
@@ -204,7 +254,6 @@ def update_board(l, home_m, enemy_m):
                 enemy_m.mana = int(l[2])
                 enemy_m.max_mana = enemy_m.mana
         elif l[1] == "DAMAGE":
-            print("Damage: " + l[2] + " on " + l[3])
             if home_m.player_id == int(parse_player_id(l[3])):
                 minion = get_minion_from_field(home_m, parse_id(l[3]))
             else:
@@ -225,7 +274,6 @@ def update_board(l, home_m, enemy_m):
             else:
                 enemy_m.hero.armor = int(l[2])
         elif l[1] == "HEALTH":
-            print("Health change: " + l[3])
             if home_m.player_id == int(parse_player_id(l[3])):
                 minion = get_minion_from_field(home_m, parse_id(l[3]))
             else:
@@ -238,7 +286,6 @@ def update_board(l, home_m, enemy_m):
                     minion.health = minion.max_health
                 minion.health = minion.max_health - minion.damage
         elif l[1] == "ATK":
-            print("Attack change: " + l[3])
             if home_m.player_id == int(parse_player_id(l[3])):
                 minion = get_minion_from_field(home_m, parse_id(l[3]))
             else:
@@ -246,7 +293,6 @@ def update_board(l, home_m, enemy_m):
             if minion is not None:
                 minion.attack = int(l[2])
         elif l[1] == "FROZEN":
-            print("Frozen: " + parseName(l[3]))
             if home_m.player_id == int(parse_player_id(l[3])):
                 minion = get_minion_from_field(home_m, parse_id(l[3]))
             else:
@@ -257,7 +303,6 @@ def update_board(l, home_m, enemy_m):
                 else:
                     minion.frozen = False
         elif l[1] == "SILENCED":
-            print("Silenced: " +  parseName(l[3]))
             if home_m.player_id == int(parse_player_id(l[3])):
                 minion = get_minion_from_field(home_m, parse_id(l[3]))
             else:
@@ -265,7 +310,6 @@ def update_board(l, home_m, enemy_m):
             if minion is not None:
                 minion.silenced = True
         elif l[1] == "TAUNT":
-            print("Taunted: " + parseName(l[3]))
             if home_m.player_id == int(parse_player_id(l[3])):
                 minion = get_minion_from_field(home_m, parse_id(l[3]))
             else:
@@ -276,7 +320,6 @@ def update_board(l, home_m, enemy_m):
                 else:
                     minion.taunt = False
         elif l[1] == "CHARGE":
-            print("Charged: " + parseName(l[3]))
             if home_m.player_id == int(parse_player_id(l[3])):
                 minion = get_minion_from_field(home_m, parse_id(l[3]))
             else:
@@ -287,7 +330,6 @@ def update_board(l, home_m, enemy_m):
                 else:
                     minion.charge = False
         elif l[1] == "WINDFURY":
-            print("Windfurious: " + parseName(l[3]))
             if home_m.player_id == int(parse_player_id(l[3])):
                 minion = get_minion_from_field(home_m, parse_id(l[3]))
             else:
@@ -298,7 +340,6 @@ def update_board(l, home_m, enemy_m):
                 else:
                     minion.windfury = False
         elif l[1] == "DEATHRATTLE":
-            print("Deathrattled: " + parseName(l[3]))
             if home_m.player_id == int(parse_player_id(l[3])):
                 minion = get_minion_from_field(home_m, parse_id(l[3]))
             else:
@@ -309,7 +350,6 @@ def update_board(l, home_m, enemy_m):
                 else:
                     minion.deathrattle = False
         elif l[1] == "DIVINE_SHIELD":
-            print("Divined: " + parseName(l[3]))
             if home_m.player_id == int(parse_player_id(l[3])):
                 minion = get_minion_from_field(home_m, parse_id(l[3]))
             else:
@@ -320,7 +360,6 @@ def update_board(l, home_m, enemy_m):
                 else:
                     minion.divine_shield = False
         elif l[1] == "CURRENT_PLAYER":
-            print("Current player: " + l[3] + " " + l[2])
             if l[3] == home_m.name:
                 if int(l[2]) == 1:
                     home_m.current_player = True
@@ -382,7 +421,10 @@ def return_minion(card):
             if card_json["name"] == card.name:
                 minion.max_health = card_json["health"]
                 minion.health = minion.max_health
-                minion.attack = card_json['attack']
+                try:
+                    minion.attack = card_json['attack']
+                except:
+                    pass
                 minion.damage = 0
                 try:
                     for mechanic in card_json['mechanics']:

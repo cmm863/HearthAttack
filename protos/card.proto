@@ -8,4 +8,5 @@ message Card {
   optional bool in_hand = 2;
   optional int32 id = 3;
   required string name = 4;
+  optional int32 mana = 5;
 }
