@@ -36,20 +36,13 @@ public class Reader implements Runnable {
       ServerSocket serverSocket = new ServerSocket(portNumber);
       Socket clientSocket = serverSocket.accept();
       DataInputStream in = new DataInputStream(clientSocket.getInputStream());
-      int length;
-      byte[] message;
       while(!terminate.get()){
         System.out.println("Waiting for message");
-        length = in.readInt();
-        while(length == 0)
-          length = in.readInt();
-        message = new byte[length];
-        in.readFully(message, 0, message.length);
+        BoardModelProto.BoardModel boardModel = BoardModelProto.BoardModel.parseFrom(in);
         System.out.println("Received a message");
-        BoardModelProto.BoardModel boardModel = BoardModelProto.BoardModel.parseFrom(message);
+        System.out.println(boardModel.toString());
         playerModel = boardModel.getPlayer();
         opponentModel = boardModel.getOpponent();
-        System.out.println(playerModel);
         write.lock();
         update.set(true);
         write.unlock();

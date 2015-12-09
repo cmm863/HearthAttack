@@ -21,11 +21,9 @@ public class Tester {
       PlayerModelProto.PlayerModel player = PlayerModelProto.PlayerModel.newBuilder().setName("").setPlayerId(0).setHero(hero).setDeck(deck)
                                                             .setMaxMana(0).addMinions(minion).addHand(card).build();
       BoardModelProto.BoardModel board = BoardModelProto.BoardModel.newBuilder().setPlayer(player).setOpponent(player).build();
-      byte[] message = board.toByteArray();
-      out.writeInt(message.length);
-      out.write(message);
+      out.write(board.toByteArray());
       out.flush();
-      System.in.read();
+      socket.close();
       System.out.println("Finished sending message");
     }
     catch (IOException e) {
