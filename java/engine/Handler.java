@@ -15,9 +15,6 @@ import com.hearthsim.card.ImplementedCardList;
 import com.hearthsim.card.weapon.WeaponCard;
 import com.hearthsim.exception.HSException;
 
-import com.hearthattack.Messenger;
-import com.hearthattack.moveGen;
-
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.atomic.AtomicBoolean;
