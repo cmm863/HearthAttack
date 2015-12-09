@@ -17,3 +17,11 @@ protos/com/protos/*.java
 *.log
 *.bin
 *.lock
+hero_pb2.py
+*.dat
+ourlog.dat
+board_model_pb2.py
+deck_pb2.py
+card_pb2.py
+ourlog.dat
+myconfig.py

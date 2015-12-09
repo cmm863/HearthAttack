@@ -44,6 +44,14 @@ tag_change_handler = [
     "ZONE"
 ]
 
+'''
+s = socket.socket()
+port = 3333
+s.connect(('127.0.0.1', port))
+'''
+
+s = open("engineIn.dat", 'w')
+
 logparser = open("ourlog.dat", 'w')
 # Create Weapon
 weapon = weapon_pb2.Weapon()
@@ -132,7 +140,9 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
         l.append(parseTag(line))
         l.append(parse_value(line))
         l.append(parse_entity(line))
-        player_model, enemy_model = update_board(l, player_model, enemy_model)
+        player_model, enemy_model = update_board(l, player_model, enemy_model, s)
+        logparser.write(player_model.__str__())
+        logparser.write(enemy_model.__str__())
         continue
         if tag in tag_change_handler and "Entity=[" in line: #checks for tag handled by parser and
             print(tag + " Detected") #Filters out Special Entities (Gamestate, User, Innkeeper, etc)
@@ -153,11 +163,16 @@ while not ("tag=PLAYSTATE" in line and "value=LOST" in line):
             l.append(parseName(line))
         except:
             continue
-        player_model, enemy_model = update_board(l, player_model, enemy_model)
+        player_model, enemy_model = update_board(l, player_model, enemy_model, s)
+        print"Turn number : %s" % {player_model.turn_number}
+        showBoard(player_model)
+        showBoard(enemy_model)
 
     else: #line contains no valid message for updater
         pass
 
     #print(message.SerializeToString())
     #print(message)
+
+s.close()
 

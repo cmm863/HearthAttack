@@ -62,4 +62,13 @@ def entitySplit(line):
     ret.append(arg.partition("=")[2])
   return ret
 
+def showBoard(player_model):
+  print player_model.name + '<ID: %s> ' % {player_model.player_id}
+  print "Mana Pool : {0}          Available : {1}".format(player_model.max_mana, player_model.mana)
+  print("----CARDS IN HAND----")
+  for card in player_model.hand:
+    print(card.name + ", ")
+  print("----CARDS ON FIELD----")
+  for minion in player_model.minions:
+    print(minion.card.name + ", ")
   
