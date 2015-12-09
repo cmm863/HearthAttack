@@ -1,24 +1,29 @@
-#include "card.pb.h"
-#include "deck.pb.h"
-#include "hero.pb.h"
-#include "minion.pb.h"
-#include "moveList.pb.h"
-#include "player_model.pb.h"
-#include "update.pb.h"
-#include "weapon.pb.h"
+#include "protos/card.pb.h"
+#include "protos/deck.pb.h"
+#include "protos/hero.pb.h"
+#include "protos/minion.pb.h"
+#include "protos/moveList.pb.h"
+#include "protos/player_model.pb.h"
+#include "protos/update.pb.h"
+#include "protos/weapon.pb.h"
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>  /* define socket */
-#include <netinet/in.h>  /* define internet socket */
-#include <netdb.h>       /* define internet socket */
-
+#include <sys/types.h> 
+#include <sys/socket.h>
+#include <netinet/in.h>
 #define SERVER_PORT 3334        /* define a server port number */
 
 using namespace std;
+
+void error(const char *msg)
+{
+    perror(msg);
+    exit(1);
+}
 
 float valCalc(const com::protos::Minion& aMinion)
 {
@@ -100,81 +105,45 @@ void printMove(const com::protos::Action& theAction, const com::protos::Board& t
   }
 }
 */
-int main()
+int main(int argc, char *argv[])
 {
   com::protos::MoveList theList;
   string msg;
   float score;
   float highscore = 0;
   int highIndex = 0;
- 
-  int sd, ns, k;
-  struct sockaddr_in server_addr = { AF_INET, htons( SERVER_PORT ) };
-    struct sockaddr_in client_addr = { AF_INET };
-    unsigned int client_len = sizeof( client_addr );
-    char buf[32768], *host;
-
-    /* create a stream socket */
-    if( ( sd = socket( AF_INET, SOCK_STREAM, 0 ) ) == -1 )
-    {
-	perror( "server: socket failed" );
-	exit( 1 );
-    }
-    
-    /* bind the socket to an internet port */
-    if( bind(sd, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1 )
-    {
-	perror( "server: bind failed" );
-	exit( 1 );
-    }
-
-    /* listen for clients */
-    if( listen( sd, 1 ) == -1 )
-    {
-	perror( "server: listen failed" );
-	exit( 1 );
-    }
-
-    printf("SERVER is listening for clients to establish a connection\n");
-
-    if( ( ns = accept( sd, (struct sockaddr*)&client_addr,
-                       &client_len ) ) == -1 )
-    {
-        perror( "server: accept failed" );
-        exit( 1 );
-    }
-
-    printf("accept() successful.. a client has connected! waiting for a message\n");
-
-    /* data transfer on connected socket ns */
-    while( (k = read(ns, buf, sizeof(buf))) != 0)
-    {    
-    	printf("SERVER RECEIVED MESSAGE\n");
-    	msg = buf;
-    	
-    	theList.ParseFromString(msg);
-  
-	  for(int i = 0; i < theList.move_size(); i++)
-	  {
-	    score = score_board(theList.move(i).actionboardpair(0).board());
-	    if(score > highscore)
-	    {
-	      highscore = score;
-	      highIndex = i;
-	    }
-	  }
-	  
-	  /* Need the Action proto to be adjusted before this can be finished
-	  for(int i = theList.move(highIndex).actionboardpair_length() - 1; i >= 0; i--)
-	  {
-	    printMove(theList.move(highIndex).actionboardpair(i).action());
-	  }
-	  */
-    }
-    close(ns);
-    close(sd);
-    unlink( (const char*)&server_addr.sin_addr);
- 
+  int sockfd, newsockfd, portno;
+  socklen_t clilen;
+  char buffer[256];
+  struct sockaddr_in serv_addr, cli_addr;
+  int n;
+  if (argc < 2) {
+    fprintf(stderr,"ERROR, no port provided\n");
+    exit(1);
+  }
+  sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  if (sockfd < 0) 
+    error("ERROR opening socket");
+  bzero((char *) &serv_addr, sizeof(serv_addr));
+  portno = atoi(argv[1]);
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_addr.s_addr = INADDR_ANY;
+  serv_addr.sin_port = htons(portno);
+  if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) 
+    error("ERROR on binding");
+  listen(sockfd,5);
+  clilen = sizeof(cli_addr);
+  newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
+  if (newsockfd < 0) 
+    error("ERROR on accept");
+  bzero(buffer,256);
+  n = read(newsockfd,buffer,255);
+  if (n < 0) error("ERROR reading from socket");
+  printf("Here is the message: %s\n",buffer);
+  n = write(newsockfd,"I got your message",18);
+  if (n < 0) error("ERROR writing to socket");
+  close(newsockfd);
+  close(sockfd);
  
   return 0;
 }
