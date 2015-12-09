@@ -95,6 +95,10 @@ public class moveGen {
       HearthTreeNode current = endState;
       retList.add(new ArrayList<HearthActionBoardPair>());
       while(current.getParent() != null) {
+        if(current.getAction() == null) {
+          System.out.println("i= " + i);
+          System.out.print(current.getDepth());
+        }
         retList.get(i).add(new HearthActionBoardPair(current.getAction(), current.data_.deepCopy()));
         current = current.getParent();
       }

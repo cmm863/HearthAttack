@@ -42,6 +42,7 @@ def update_board(l, home_m, enemy_m):
             home_m.hand.extend([card])
             home_m.deck.cards.remove(card)
             if home_m.submit:
+                print "Here"
                 s = socket.socket()
                 port = 3332
                 s.connect(('127.0.0.1', port))
@@ -49,7 +50,6 @@ def update_board(l, home_m, enemy_m):
                 bm.player.CopyFrom(home_m)
                 bm.opponent.CopyFrom(enemy_m)
                 s.send(bm.SerializeToString())
-                print s.recv(1024)
                 s.close()
                 home_m.submit = False
 
@@ -322,9 +322,12 @@ def update_board(l, home_m, enemy_m):
         elif l[1] == "CURRENT_PLAYER":
             print("Current player: " + l[3] + " " + l[2])
             if l[3] == home_m.name:
+                print "before if"
                 if int(l[2]) == 1:
+                    print "before set"
                     home_m.current_player = True
                     home_m.submit = True
+                    print "after submit"
                 else:
                     home_m.current_player = False
             else:
@@ -332,7 +335,9 @@ def update_board(l, home_m, enemy_m):
                     enemy_m.current_player = True
                 else:
                     enemy_m.current_player = False
+        print l
     return home_m, enemy_m
+
 
 
 def output_hand(home_m):

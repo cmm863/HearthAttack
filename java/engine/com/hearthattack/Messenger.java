@@ -54,12 +54,14 @@ public class Messenger {
       }
       msg.addMove(move.build());
     }
-    msg.build().writeTo(output);
+    System.out.println(msg.build().toString());
   }
   
   public HAOutboundProto.HABP convertABP(HearthActionBoardPair abp) {
     HAOutboundProto.HABP.Builder ret = HAOutboundProto.HABP.newBuilder();
     ret.setBoard(this.convertBoard(abp.board));
+	if(abp.action == null)
+      System.out.println("NULL");
     ret.setAction(this.convertAction(abp.action));
     return ret.build();
   }
@@ -73,11 +75,20 @@ public class Messenger {
   
   public HAOutboundProto.Action convertAction(HearthAction action) {
     HAOutboundProto.Action.Builder ret = HAOutboundProto.Action.newBuilder();
-    ret.setVerb(this.convertVerb(action.verb_));
+    try{
+      ret.setVerb(this.convertVerb(action.verb_));
     ret.setActionPerformerPlayerSide(this.convertPlayerSide(action.getAPPS()));
     ret.setCardOrCharacterIndex(action.getIndex());
     ret.setTargetPlayerSide(this.convertPlayerSide(action.getTPS()));
     ret.setTargetCharacterIndex(this.convertCharIndex(action.targetCharacterIndex));
+    }
+    catch (NullPointerException e) {
+      ret.setVerb(this.convertVerb(HearthAction.Verb.DO_NOT_USE_CARD));
+      ret.setActionPerformerPlayerSide(this.convertPlayerSide(PlayerSide.CURRENT_PLAYER));
+      ret.setCardOrCharacterIndex(0);
+      ret.setTargetPlayerSide(this.convertPlayerSide(PlayerSide.WAITING_PLAYER));
+      ret.setTargetCharacterIndex(this.convertCharIndex(CharacterIndex.fromInteger(0)));
+    }
     return ret.build();
   }
   
@@ -152,6 +163,7 @@ public class Messenger {
     ret.setCantAttack(!minion.canAttack());//ADD SHIT
     ret.setTribe(this.convertTribe(minion.getTribe()));
     ret.setCard(this.convertCard(minion));
+    ret.setTurnPlayed(0);
     return ret.build();
   }
   
