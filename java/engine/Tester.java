@@ -11,6 +11,7 @@ public class Tester {
   public static void main(String[] args){
     int portNumber = Integer.parseInt(args[0]);
     try {
+      FileOutputStream outfile = new FileOutputStream("test");
       Socket socket = new Socket("localhost", portNumber);
       PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
       CardProto.Card card = CardProto.Card.newBuilder().setName("").build();
@@ -21,10 +22,9 @@ public class Tester {
       PlayerModelProto.PlayerModel player = PlayerModelProto.PlayerModel.newBuilder().setName("").setPlayerId(0).setHero(hero).setDeck(deck)
                                                             .setMaxMana(0).addMinions(minion).addHand(card).build();
       BoardModelProto.BoardModel board = BoardModelProto.BoardModel.newBuilder().setPlayer(player).setOpponent(player).build();
-      String message = board.toString();
-	  System.out.println(message);
-      out.println(message);
-      out.flush();
+      outfile.write(board.toByteArray());
+//      out.println(board.toByteArray());
+//      out.flush();
       System.in.read();
       System.out.println("Finished sending message");
     }
